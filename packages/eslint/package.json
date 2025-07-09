@@ -1,6 +1,6 @@
 {
     "name": "@arowanadao/eslint",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Common ESLint config for Arowana projects",
     "license": "MIT",
     "author": "Arowana Finance",
@@ -22,7 +22,7 @@
         "build": "tsc --declaration",
         "start": "tsx index.ts",
         "test": "tsx index.ts",
-        "publish": "npm publish --access public"
+        "ci-publish": "npm publish --access public"
     },
     "dependencies": {
         "eslint": "^9.30.1",
