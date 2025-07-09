@@ -1,0 +1,2 @@
+packages/*/lib/**/* linguist-vendored
+packages/*/contracts/**/*.sol linguist-language=Solidity
