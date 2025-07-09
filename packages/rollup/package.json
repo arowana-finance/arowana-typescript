@@ -1,6 +1,6 @@
 {
     "name": "@arowanadao/rollup",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Rollup plugin & config generator for Arowana TypeScript projects",
     "license": "MIT",
     "author": "Arowana Finance",
@@ -40,7 +40,7 @@
         "docs:build": "vitepress build docs",
         "docs:preview": "vitepress preview docs",
         "test": "vitest && istanbul-badges-readme --colors=\"red:50,yellow:60\"",
-        "publish": "npm publish --access public"
+        "ci-publish": "npm publish --access public"
     },
     "dependencies": {
         "@rollup/plugin-commonjs": "^28.0.6",

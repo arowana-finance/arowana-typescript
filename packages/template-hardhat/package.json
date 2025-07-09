@@ -1,6 +1,6 @@
 {
     "name": "template-hardhat",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Typescript Hardhat template for Arowana Finance projects",
     "license": "MIT",
     "author": "Arowana",
@@ -41,7 +41,7 @@
         "docs:preview": "vitepress preview docs",
         "test": "yarn hardhat test --no-compile",
         "coverage": "hardhat clean && yarn hardhat coverage --solcoverjs ./.solcover.cjs && istanbul-badges-readme --colors=\"red:50,yellow:60\"",
-        "publish": "echo \"Publish: no publish actions for this repository\""
+        "ci-publish": "echo \"Publish: no publish actions for this repository\""
     },
     "devDependencies": {
         "@arowanadao/eslint": "*",

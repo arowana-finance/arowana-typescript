@@ -84,7 +84,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       # 4. Publish
-      - name: yarn publish
+      - name: yarn ci-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn run publish --provenance
+        run: yarn ci-publish --provenance

@@ -1,6 +1,6 @@
 {
     "name": "template-typescript",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "TypeScript template for Arowana Finance projects",
     "license": "MIT",
     "author": "Arowana Finance",
@@ -30,7 +30,7 @@
         "docs:build": "vitepress build docs",
         "docs:preview": "vitepress preview docs",
         "test": "vitest && istanbul-badges-readme --colors=\"red:50,yellow:60\"",
-        "publish": "echo \"Publish: no publish actions for this repository\""
+        "ci-publish": "echo \"Publish: no publish actions for this repository\""
     },
     "devDependencies": {
         "@arowanadao/eslint": "*",
