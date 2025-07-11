@@ -34,3 +34,9 @@ export type { IFunctionsRouter } from "./@chainlink/contracts/src/v0.8/functions
 export { IFunctionsRouter__factory } from "./factories/@chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsRouter.sol/IFunctionsRouter__factory.js";
 export type { IFunctionsClient } from "./@chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol/IFunctionsClient.js";
 export { IFunctionsClient__factory } from "./factories/@chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol/IFunctionsClient__factory.js";
+export type { AutomationCompatibleInterface } from "./@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol/AutomationCompatibleInterface.js";
+export { AutomationCompatibleInterface__factory } from "./factories/@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol/AutomationCompatibleInterface__factory.js";
+export type { AutomationCompatible } from "./@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol/AutomationCompatible.js";
+export { AutomationCompatible__factory } from "./factories/@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol/AutomationCompatible__factory.js";
+export type { AutomationBase } from "./@chainlink/contracts/src/v0.8/automation/AutomationBase.sol/AutomationBase.js";
+export { AutomationBase__factory } from "./factories/@chainlink/contracts/src/v0.8/automation/AutomationBase.sol/AutomationBase__factory.js";

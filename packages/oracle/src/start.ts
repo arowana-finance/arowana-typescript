@@ -1,8 +1,46 @@
 #!/usr/bin/env node
-import { writeFile } from 'fs/promises';
-import { gate, mexc } from 'ccxt';
-import { toJSONL } from './utils.js';
-import { getOHLCV, PriceVWAP } from './price.js';
+import { readFile, stat, writeFile } from 'fs/promises';
+import { Exchange, gate, mexc } from 'ccxt';
+import { parseJSONL, toJSONL } from './utils.js';
+import { getOHLCV, Price, PriceVWAP } from './price.js';
+
+const LOCAL_GATE = 'price_gate.jsonl';
+const LOCAL_MEXC = 'price_mexc.jsonl';
+const LOCAL_VWAP = 'price_vwap.jsonl';
+
+async function existsAsync(fileOrDir: string): Promise<boolean> {
+    try {
+        await stat(fileOrDir);
+
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+async function getLocalPrice(localFile: string): Promise<Price[]> {
+    try {
+        const exists = await existsAsync(localFile);
+
+        if (!exists) {
+            return [];
+        }
+
+        return parseJSONL(await readFile(localFile, { encoding: 'utf8' }));
+    } catch {
+        return [];
+    }
+}
+
+async function getPrices(localFile: string, symbol: string, exchange: Exchange): Promise<Price[]> {
+    const localPrices = await getLocalPrice(localFile);
+    const startTime = localPrices.length ? (localPrices.slice(-1)[0].timestamp + 1) * 1000 : undefined;
+
+    // Remove last element as it is not finalized
+    const latestPrices = (await getOHLCV({ exchange, symbol, startTime })).slice(0, -1);
+
+    return localPrices.concat(latestPrices);
+}
 
 async function update() {
     const symbol = 'ARW/USDT';
@@ -10,8 +48,8 @@ async function update() {
     const mexcEx = new mexc({ enableRateLimit: true });
 
     const [gatePrices, mexcPrices] = await Promise.all([
-        getOHLCV({ exchange: gateEx, symbol }),
-        getOHLCV({ exchange: mexcEx, symbol }),
+        getPrices(LOCAL_GATE, symbol, gateEx),
+        getPrices(LOCAL_MEXC, symbol, mexcEx),
     ]);
 
     const vwapPrices = Object.values(
@@ -45,9 +83,9 @@ async function update() {
         `VWAP Prices Count: ${vwapPrices.length}, Last Price: ${new Date(lastPriceTimestamp).toUTCString()}: ${lastPrice.price || 0}`,
     );
 
-    await writeFile('price_gate.jsonl', toJSONL(gatePrices));
-    await writeFile('price_mexc.jsonl', toJSONL(mexcPrices));
-    await writeFile('price_vwap.jsonl', toJSONL(vwapPrices));
+    await writeFile(LOCAL_GATE, toJSONL(gatePrices));
+    await writeFile(LOCAL_MEXC, toJSONL(mexcPrices));
+    await writeFile(LOCAL_VWAP, toJSONL(vwapPrices));
 }
 
 update();

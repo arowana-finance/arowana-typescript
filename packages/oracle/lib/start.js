@@ -1,7 +1,11 @@
 #!/usr/bin/env node
-import { writeFile } from 'fs/promises';
+import { writeFile, readFile, stat } from 'fs/promises';
 import { gate, mexc } from 'ccxt';
 
+function parseJSONL(jsonl) {
+  const lines = jsonl.split(/\r?\n/);
+  return lines.map((line) => line.trim()).filter((line) => line.length > 0).map((line) => JSON.parse(line));
+}
 function toJSONL(array) {
   return array.map((item) => JSON.stringify(item)).join("\n");
 }
@@ -17,7 +21,7 @@ async function getOHLCV({
   while (true) {
     const from = (() => {
       if (candles.length) {
-        const _startTime = candles[candles.length - 1][0] + 1;
+        const _startTime = candles.slice(-1)[0][0] + 1;
         return _startTime > Date.now() ? Date.now() : _startTime;
       }
       return startTime;
@@ -38,13 +42,41 @@ async function getOHLCV({
   }).filter((c) => c.price && c.volume);
 }
 
+const LOCAL_GATE = "price_gate.jsonl";
+const LOCAL_MEXC = "price_mexc.jsonl";
+const LOCAL_VWAP = "price_vwap.jsonl";
+async function existsAsync(fileOrDir) {
+  try {
+    await stat(fileOrDir);
+    return true;
+  } catch {
+    return false;
+  }
+}
+async function getLocalPrice(localFile) {
+  try {
+    const exists = await existsAsync(localFile);
+    if (!exists) {
+      return [];
+    }
+    return parseJSONL(await readFile(localFile, { encoding: "utf8" }));
+  } catch {
+    return [];
+  }
+}
+async function getPrices(localFile, symbol, exchange) {
+  const localPrices = await getLocalPrice(localFile);
+  const startTime = localPrices.length ? (localPrices.slice(-1)[0].timestamp + 1) * 1e3 : void 0;
+  const latestPrices = (await getOHLCV({ exchange, symbol, startTime })).slice(0, -1);
+  return localPrices.concat(latestPrices);
+}
 async function update() {
   const symbol = "ARW/USDT";
   const gateEx = new gate({ enableRateLimit: true });
   const mexcEx = new mexc({ enableRateLimit: true });
   const [gatePrices, mexcPrices] = await Promise.all([
-    getOHLCV({ exchange: gateEx, symbol }),
-    getOHLCV({ exchange: mexcEx, symbol })
+    getPrices(LOCAL_GATE, symbol, gateEx),
+    getPrices(LOCAL_MEXC, symbol, mexcEx)
   ]);
   const vwapPrices = Object.values(
     [...gatePrices, ...mexcPrices].sort((a, b) => a.timestamp - b.timestamp).reduce(
@@ -70,8 +102,8 @@ async function update() {
   console.log(
     `VWAP Prices Count: ${vwapPrices.length}, Last Price: ${new Date(lastPriceTimestamp).toUTCString()}: ${lastPrice.price || 0}`
   );
-  await writeFile("price_gate.jsonl", toJSONL(gatePrices));
-  await writeFile("price_mexc.jsonl", toJSONL(mexcPrices));
-  await writeFile("price_vwap.jsonl", toJSONL(vwapPrices));
+  await writeFile(LOCAL_GATE, toJSONL(gatePrices));
+  await writeFile(LOCAL_MEXC, toJSONL(mexcPrices));
+  await writeFile(LOCAL_VWAP, toJSONL(vwapPrices));
 }
 update();

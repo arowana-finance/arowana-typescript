@@ -3,6 +3,7 @@ import '@nomicfoundation/hardhat-toolbox';
 import '@nomicfoundation/hardhat-ethers';
 import 'hardhat-dependency-compiler';
 import 'hardhat-preprocessor';
+import 'hardhat-tracer';
 import 'ethers-opt/hardhat/flatten';
 import 'ethers-opt/hardhat/typefix';
 import { getRemappingsTransformerFunc } from 'ethers-opt/hardhat/remappings';

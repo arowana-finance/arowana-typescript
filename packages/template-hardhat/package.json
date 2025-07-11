@@ -1,6 +1,6 @@
 {
     "name": "template-hardhat",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Typescript Hardhat template for Arowana Finance projects",
     "license": "MIT",
     "author": "Arowana",

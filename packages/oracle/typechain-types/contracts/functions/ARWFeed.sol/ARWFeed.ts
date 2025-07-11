@@ -28,6 +28,7 @@ export interface ARWFeedInterface extends Interface {
     nameOrSignature:
       | "addSettler"
       | "answers"
+      | "checkUpkeep"
       | "decimals"
       | "donID"
       | "gasLimit"
@@ -37,17 +38,23 @@ export interface ARWFeedInterface extends Interface {
       | "latestAnswer"
       | "latestRound"
       | "latestTimestamp"
+      | "maxBaseGasPrice"
       | "owner"
+      | "performUpkeep"
       | "removeSettler"
       | "renounceOwnership"
       | "request"
       | "s_lastRequestId"
       | "sendRequestCBOR"
       | "setConsumer"
+      | "setFeedInfo"
+      | "setGasPrice"
+      | "setInterval"
       | "settlers"
       | "subscriptionId"
       | "transferOwnership"
       | "updateAnswer"
+      | "updateInterval"
       | "updateRequest"
       | "upkeepContract",
   ): FunctionFragment;
@@ -72,6 +79,10 @@ export interface ARWFeedInterface extends Interface {
   encodeFunctionData(
     functionFragment: "answers",
     values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "checkUpkeep",
+    values: [BytesLike],
   ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(functionFragment: "donID", values?: undefined): string;
@@ -100,7 +111,15 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "latestTimestamp",
     values?: undefined,
   ): string;
+  encodeFunctionData(
+    functionFragment: "maxBaseGasPrice",
+    values?: undefined,
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "performUpkeep",
+    values: [BytesLike],
+  ): string;
   encodeFunctionData(
     functionFragment: "removeSettler",
     values: [AddressLike],
@@ -122,6 +141,18 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "setConsumer",
     values: [AddressLike, AddressLike],
   ): string;
+  encodeFunctionData(
+    functionFragment: "setFeedInfo",
+    values: [AddressLike, AddressLike, BigNumberish, BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setGasPrice",
+    values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setInterval",
+    values: [BigNumberish],
+  ): string;
   encodeFunctionData(functionFragment: "settlers", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "subscriptionId",
@@ -136,6 +167,10 @@ export interface ARWFeedInterface extends Interface {
     values: [BigNumberish],
   ): string;
   encodeFunctionData(
+    functionFragment: "updateInterval",
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
     functionFragment: "updateRequest",
     values: [BytesLike, BigNumberish, BigNumberish, BytesLike],
   ): string;
@@ -146,6 +181,10 @@ export interface ARWFeedInterface extends Interface {
 
   decodeFunctionResult(functionFragment: "addSettler", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "answers", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "checkUpkeep",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "donID", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gasLimit", data: BytesLike): Result;
@@ -170,7 +209,15 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "latestTimestamp",
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "maxBaseGasPrice",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "performUpkeep",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeSettler",
     data: BytesLike,
@@ -192,6 +239,18 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "setConsumer",
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "setFeedInfo",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setGasPrice",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setInterval",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(functionFragment: "settlers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "subscriptionId",
@@ -203,6 +262,10 @@ export interface ARWFeedInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "updateAnswer",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateInterval",
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -392,6 +455,12 @@ export interface ARWFeed extends BaseContract {
 
   answers: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
+  checkUpkeep: TypedContractMethod<
+    [arg0: BytesLike],
+    [[boolean, string] & { upkeepNeeded: boolean }],
+    "view"
+  >;
+
   decimals: TypedContractMethod<[], [bigint], "view">;
 
   donID: TypedContractMethod<[], [string], "view">;
@@ -418,7 +487,11 @@ export interface ARWFeed extends BaseContract {
 
   latestTimestamp: TypedContractMethod<[], [bigint], "view">;
 
+  maxBaseGasPrice: TypedContractMethod<[], [bigint], "view">;
+
   owner: TypedContractMethod<[], [string], "view">;
+
+  performUpkeep: TypedContractMethod<[arg0: BytesLike], [void], "nonpayable">;
 
   removeSettler: TypedContractMethod<
     [_settler: AddressLike],
@@ -440,6 +513,29 @@ export interface ARWFeed extends BaseContract {
     "nonpayable"
   >;
 
+  setFeedInfo: TypedContractMethod<
+    [
+      _router: AddressLike,
+      _upkeepContract: AddressLike,
+      _gasPrice: BigNumberish,
+      _interval: BigNumberish,
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  setGasPrice: TypedContractMethod<
+    [_gasPrice: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  setInterval: TypedContractMethod<
+    [_interval: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   settlers: TypedContractMethod<[], [string[]], "view">;
 
   subscriptionId: TypedContractMethod<[], [bigint], "view">;
@@ -455,6 +551,8 @@ export interface ARWFeed extends BaseContract {
     [void],
     "nonpayable"
   >;
+
+  updateInterval: TypedContractMethod<[], [bigint], "view">;
 
   updateRequest: TypedContractMethod<
     [
@@ -479,6 +577,13 @@ export interface ARWFeed extends BaseContract {
   getFunction(
     nameOrSignature: "answers",
   ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "checkUpkeep",
+  ): TypedContractMethod<
+    [arg0: BytesLike],
+    [[boolean, string] & { upkeepNeeded: boolean }],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "decimals",
   ): TypedContractMethod<[], [bigint], "view">;
@@ -511,8 +616,14 @@ export interface ARWFeed extends BaseContract {
     nameOrSignature: "latestTimestamp",
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "maxBaseGasPrice",
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "owner",
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "performUpkeep",
+  ): TypedContractMethod<[arg0: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "removeSettler",
   ): TypedContractMethod<[_settler: AddressLike], [void], "nonpayable">;
@@ -536,6 +647,24 @@ export interface ARWFeed extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setFeedInfo",
+  ): TypedContractMethod<
+    [
+      _router: AddressLike,
+      _upkeepContract: AddressLike,
+      _gasPrice: BigNumberish,
+      _interval: BigNumberish,
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "setGasPrice",
+  ): TypedContractMethod<[_gasPrice: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setInterval",
+  ): TypedContractMethod<[_interval: BigNumberish], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "settlers",
   ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
@@ -547,6 +676,9 @@ export interface ARWFeed extends BaseContract {
   getFunction(
     nameOrSignature: "updateAnswer",
   ): TypedContractMethod<[newAnswer: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateInterval",
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "updateRequest",
   ): TypedContractMethod<

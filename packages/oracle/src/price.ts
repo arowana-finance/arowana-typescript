@@ -31,7 +31,7 @@ export async function getOHLCV({
     while (true) {
         const from = (() => {
             if (candles.length) {
-                const _startTime = (candles[candles.length - 1][0] as number) + 1;
+                const _startTime = (candles.slice(-1)[0][0] as number) + 1;
 
                 // Ahead of future
                 return _startTime > Date.now() ? Date.now() : _startTime;

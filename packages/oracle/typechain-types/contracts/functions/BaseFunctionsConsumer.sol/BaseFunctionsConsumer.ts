@@ -27,11 +27,13 @@ export interface BaseFunctionsConsumerInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "addSettler"
+      | "checkUpkeep"
       | "donID"
       | "gasLimit"
       | "handleOracleFulfillment"
       | "initialize"
       | "owner"
+      | "performUpkeep"
       | "removeSettler"
       | "renounceOwnership"
       | "request"
@@ -61,6 +63,10 @@ export interface BaseFunctionsConsumerInterface extends Interface {
     functionFragment: "addSettler",
     values: [AddressLike],
   ): string;
+  encodeFunctionData(
+    functionFragment: "checkUpkeep",
+    values: [BytesLike],
+  ): string;
   encodeFunctionData(functionFragment: "donID", values?: undefined): string;
   encodeFunctionData(functionFragment: "gasLimit", values?: undefined): string;
   encodeFunctionData(
@@ -72,6 +78,10 @@ export interface BaseFunctionsConsumerInterface extends Interface {
     values: [AddressLike],
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "performUpkeep",
+    values: [BytesLike],
+  ): string;
   encodeFunctionData(
     functionFragment: "removeSettler",
     values: [AddressLike],
@@ -112,6 +122,10 @@ export interface BaseFunctionsConsumerInterface extends Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "addSettler", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "checkUpkeep",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(functionFragment: "donID", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gasLimit", data: BytesLike): Result;
   decodeFunctionResult(
@@ -120,6 +134,10 @@ export interface BaseFunctionsConsumerInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "performUpkeep",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeSettler",
     data: BytesLike,
@@ -313,6 +331,12 @@ export interface BaseFunctionsConsumer extends BaseContract {
     "nonpayable"
   >;
 
+  checkUpkeep: TypedContractMethod<
+    [arg0: BytesLike],
+    [[boolean, string] & { upkeepNeeded: boolean }],
+    "view"
+  >;
+
   donID: TypedContractMethod<[], [string], "view">;
 
   gasLimit: TypedContractMethod<[], [bigint], "view">;
@@ -330,6 +354,8 @@ export interface BaseFunctionsConsumer extends BaseContract {
   >;
 
   owner: TypedContractMethod<[], [string], "view">;
+
+  performUpkeep: TypedContractMethod<[arg0: BytesLike], [void], "nonpayable">;
 
   removeSettler: TypedContractMethod<
     [_settler: AddressLike],
@@ -382,6 +408,13 @@ export interface BaseFunctionsConsumer extends BaseContract {
     nameOrSignature: "addSettler",
   ): TypedContractMethod<[_settler: AddressLike], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "checkUpkeep",
+  ): TypedContractMethod<
+    [arg0: BytesLike],
+    [[boolean, string] & { upkeepNeeded: boolean }],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "donID",
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -400,6 +433,9 @@ export interface BaseFunctionsConsumer extends BaseContract {
   getFunction(
     nameOrSignature: "owner",
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "performUpkeep",
+  ): TypedContractMethod<[arg0: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "removeSettler",
   ): TypedContractMethod<[_settler: AddressLike], [void], "nonpayable">;

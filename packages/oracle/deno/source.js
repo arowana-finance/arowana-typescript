@@ -1,9 +1,10 @@
 // Imports
 const ethers = await import("npm:ethers@6.15.0");
 
-const VWAP_PRICE_URL = '';
+const VWAP_PRICE_URL = 'https://raw.githubusercontent.com/arowana-finance/arowana-data/main/arw_price/price_vwap.jsonl';
 const RPC_URL = 'https://sepolia-rollup.arbitrum.io/rpc';
-const CONTRACT_ADDRESS = '';
+const CONTRACT_ADDRESS = '0x';
+const ORACLE_DECIMALS = 8;
 
 const abi = [
     {
@@ -75,33 +76,54 @@ function parseJSONL(jsonl) {
         .map((line) => JSON.parse(line));
 }
 
+function chunk(arr, size) {
+    return [...Array(Math.ceil(arr.length / size))].map((_, i) => arr.slice(size * i, size + size * i));
+}
+
 const provider = new FunctionsJsonRpcProvider(RPC_URL);
 const dataFeedContract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
 const dataFeedTimestamp = Number(await dataFeedContract.latestTimestamp());
 
-const vwapRequest = await Functions.makeHttpRequest({ url: VWAP_PRICE_URL });
+const vwapPrices = await (async () => {
+    try {
+        const resp = await fetch(VWAP_PRICE_URL);
 
-const vwapPrices = !vwapRequest.error ? parseJSONL(vwapRequest.data) : [];
+        if (!resp.ok) {
+            return [];
+        }
 
-const { prices, timestamps } = vwapPrices
+        return parseJSONL(await resp.text());
+    } catch {
+        return [];
+    }
+})();
+
+const { nums } = vwapPrices
     .filter(p => p.timestamp > dataFeedTimestamp)
     .reduce((acc, curr) => {
-        acc.prices.push(curr.price);
-        acc.timestamps.push(curr.timestamp);
+        const priceBN = ethers.parseUnits(
+            Number(curr.price.toFixed(ORACLE_DECIMALS)).toString(),
+            ORACLE_DECIMALS
+        );
+        const timestampBN = BigInt(curr.timestamp);
+
+        acc.prices.push(priceBN);
+        acc.timestamps.push(timestampBN);
+        acc.nums.push(...[priceBN, timestampBN]);
         return acc;
     }, {
         prices: [],
         timestamps: [],
+        nums: [],
     });
 
 // Nothing to update, just send zero length bytes to emit contract only
-if (!prices.length) {
+if (!nums.length) {
     return ethers.getBytes('0x');
 }
 
-const encoded = ethers.AbiCoder.defaultAbiCoder().encode(
-    ['uint256[]', 'uint256[]'],
-    [prices, timestamps]
-);
+const chunked = chunk(nums, 14)[0];
+
+const encoded = ethers.solidityPacked(chunked.map(() => 'uint64'), chunked);
 
 return ethers.getBytes(encoded);

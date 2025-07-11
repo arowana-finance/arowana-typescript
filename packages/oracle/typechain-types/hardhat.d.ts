@@ -65,6 +65,18 @@ declare module "hardhat/types/runtime" {
       name: "IFunctionsClient",
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.IFunctionsClient__factory>;
+    getContractFactory(
+      name: "AutomationCompatibleInterface",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.AutomationCompatibleInterface__factory>;
+    getContractFactory(
+      name: "AutomationCompatible",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.AutomationCompatible__factory>;
+    getContractFactory(
+      name: "AutomationBase",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.AutomationBase__factory>;
 
     getContractAt(
       name: "Lock",
@@ -131,6 +143,21 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer,
     ): Promise<Contracts.IFunctionsClient>;
+    getContractAt(
+      name: "AutomationCompatibleInterface",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.AutomationCompatibleInterface>;
+    getContractAt(
+      name: "AutomationCompatible",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.AutomationCompatible>;
+    getContractAt(
+      name: "AutomationBase",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.AutomationBase>;
 
     deployContract(
       name: "Lock",
@@ -184,6 +211,18 @@ declare module "hardhat/types/runtime" {
       name: "IFunctionsClient",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.IFunctionsClient>;
+    deployContract(
+      name: "AutomationCompatibleInterface",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AutomationCompatibleInterface>;
+    deployContract(
+      name: "AutomationCompatible",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AutomationCompatible>;
+    deployContract(
+      name: "AutomationBase",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AutomationBase>;
 
     deployContract(
       name: "Lock",
@@ -250,6 +289,21 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.IFunctionsClient>;
+    deployContract(
+      name: "AutomationCompatibleInterface",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AutomationCompatibleInterface>;
+    deployContract(
+      name: "AutomationCompatible",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AutomationCompatible>;
+    deployContract(
+      name: "AutomationBase",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AutomationBase>;
 
     // default types
     getContractFactory(

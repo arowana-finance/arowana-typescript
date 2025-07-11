@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import { AutomationCompatible } from '@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol';
 import { WithSettler } from '../common/WithSettler.sol';
 import { FunctionsClient } from './FunctionsClient.sol';
 
 /**
  * @title Functions Consumer contract used for Chainlink Automation.
  */
-contract BaseFunctionsConsumer is FunctionsClient, WithSettler {
+contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSettler {
     /**
      * @dev Chainlink Settings
      */
@@ -26,12 +27,12 @@ contract BaseFunctionsConsumer is FunctionsClient, WithSettler {
     /**
      * @notice Reverts if called by anyone other than the contract owner or automation registry.
      */
-    modifier onlyChainlink() {
+    modifier onlyUpkeep() {
         require(msg.sender == owner() || msg.sender == upkeepContract, 'NotAllowedCaller');
         _;
     }
 
-    function setConsumer(address _router, address _upkeepContract) external onlyOwner {
+    function setConsumer(address _router, address _upkeepContract) public onlyOwner {
         _initializeFuncClient(_router);
         upkeepContract = _upkeepContract;
 
@@ -49,7 +50,7 @@ contract BaseFunctionsConsumer is FunctionsClient, WithSettler {
         uint64 _subscriptionId,
         uint32 _gasLimit,
         bytes32 _donID
-    ) external onlyOwner {
+    ) public onlyOwner {
         request = _request;
         subscriptionId = _subscriptionId;
         gasLimit = _gasLimit;
@@ -57,10 +58,30 @@ contract BaseFunctionsConsumer is FunctionsClient, WithSettler {
     }
 
     /**
+     * @dev Upkeep settings
+     * Use this when custom upkeep is enabled
+     */
+    function _checkUpkeepCondition() internal view virtual returns (bool) {
+        return false;
+    }
+
+    function checkUpkeep(
+        bytes calldata /* checkData */
+    ) external view override cannotExecute returns (bool upkeepNeeded, bytes memory /* performData */) {
+        return (_checkUpkeepCondition(), new bytes(0));
+    }
+
+    function performUpkeep(bytes calldata /* performData */) external override {
+        if (_checkUpkeepCondition()) {
+            s_lastRequestId = _sendRequest(request, subscriptionId, gasLimit, donID);
+        }
+    }
+
+    /**
      * @notice Send a pre-encoded CBOR request
      * @return requestId The ID of the sent request
      */
-    function sendRequestCBOR() external onlyChainlink returns (bytes32 requestId) {
+    function sendRequestCBOR() external onlyUpkeep returns (bytes32 requestId) {
         s_lastRequestId = _sendRequest(request, subscriptionId, gasLimit, donID);
         return s_lastRequestId;
     }
