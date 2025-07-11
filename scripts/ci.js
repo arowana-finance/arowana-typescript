@@ -1,4 +1,4 @@
-#!/bin/node
+#!/usr/bin/env node
 import process from 'process';
 import { readdir, writeFile } from 'fs/promises';
 import path from 'path';

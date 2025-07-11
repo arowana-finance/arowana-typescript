@@ -1,6 +1,6 @@
 {
     "name": "@arowanadao/rollup",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "description": "Rollup plugin & config generator for Arowana TypeScript projects",
     "license": "MIT",
     "author": "Arowana Finance",

@@ -1,6 +1,6 @@
 {
     "name": "template-hardhat",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "description": "Typescript Hardhat template for Arowana Finance projects",
     "license": "MIT",
     "author": "Arowana",
@@ -28,7 +28,6 @@
         "url": "git+https://github.com/arowana-finance/arowana-typescript.git"
     },
     "scripts": {
-        "postinstall": "yarn compile",
         "hardhat": "cross-env NODE_OPTIONS=\"--loader ts-node/esm/transpile-only --no-warnings=ExperimentalWarning\" hardhat",
         "prettier": "prettier contracts/**/*.sol",
         "lint": "yarn prettier -c && eslint ignition/**/*.ts scripts/**/*.ts src/**/*.ts test/**/*.ts",
@@ -39,7 +38,7 @@
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
         "docs:preview": "vitepress preview docs",
-        "test": "yarn hardhat test --no-compile",
+        "test": "yarn hardhat test",
         "coverage": "hardhat clean && yarn hardhat coverage --solcoverjs ./.solcover.cjs && istanbul-badges-readme --colors=\"red:50,yellow:60\"",
         "ci-publish": "echo \"Publish: no publish actions for this repository\""
     },
