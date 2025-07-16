@@ -17,7 +17,7 @@ import {
 abstract contract FunctionsClient is IFunctionsClient {
     using FunctionsRequest for FunctionsRequest.Request;
 
-    IFunctionsRouter internal i_router;
+    IFunctionsRouter public i_router;
 
     event RequestSent(bytes32 indexed id);
     event RequestFulfilled(bytes32 indexed id);

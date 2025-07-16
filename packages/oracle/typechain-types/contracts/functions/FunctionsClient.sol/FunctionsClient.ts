@@ -22,7 +22,9 @@ import type {
 } from "../../../common.js";
 
 export interface FunctionsClientInterface extends Interface {
-  getFunction(nameOrSignature: "handleOracleFulfillment"): FunctionFragment;
+  getFunction(
+    nameOrSignature: "handleOracleFulfillment" | "i_router",
+  ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic: "RequestFulfilled" | "RequestSent",
@@ -32,11 +34,13 @@ export interface FunctionsClientInterface extends Interface {
     functionFragment: "handleOracleFulfillment",
     values: [BytesLike, BytesLike, BytesLike],
   ): string;
+  encodeFunctionData(functionFragment: "i_router", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "handleOracleFulfillment",
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(functionFragment: "i_router", data: BytesLike): Result;
 }
 
 export namespace RequestFulfilledEvent {
@@ -112,6 +116,8 @@ export interface FunctionsClient extends BaseContract {
     "nonpayable"
   >;
 
+  i_router: TypedContractMethod<[], [string], "view">;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment,
   ): T;
@@ -123,6 +129,9 @@ export interface FunctionsClient extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "i_router",
+  ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
     key: "RequestFulfilled",

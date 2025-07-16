@@ -5,8 +5,7 @@ import { DataFeed } from '../common/DataFeed.sol';
 import { BaseFunctionsConsumer } from './BaseFunctionsConsumer.sol';
 
 contract ARWFeed is DataFeed, BaseFunctionsConsumer {
-    uint256 public updateInterval;
-    uint256 public maxBaseGasPrice;
+    uint64 public updateInterval;
 
     mapping(uint64 => uint64) public answers;
 
@@ -14,11 +13,12 @@ contract ARWFeed is DataFeed, BaseFunctionsConsumer {
      * @dev For custom chainlink interval updates
      */
     function _checkUpkeepCondition() internal view override returns (bool) {
-        if (block.basefee > maxBaseGasPrice) {
+        // Apply rate limits from chainlink
+        if (!super._checkUpkeepCondition()) {
             return false;
         }
 
-        if (block.timestamp < (latestTimestamp + updateInterval)) {
+        if (block.timestamp < (latestTimestamp + uint256(updateInterval))) {
             return false;
         }
 
@@ -28,20 +28,18 @@ contract ARWFeed is DataFeed, BaseFunctionsConsumer {
     function setFeedInfo(
         address _router,
         address _upkeepContract,
-        uint256 _gasPrice,
-        uint256 _interval
+        uint64 _upkeepRateInterval,
+        uint64 _upkeepRateCap,
+        uint64 _maxBaseGasPrice,
+        uint64 _updateInterval
     ) public onlyOwner {
-        setConsumer(_router, _upkeepContract);
-        setGasPrice(_gasPrice);
-        setInterval(_interval);
+        setConsumer(_router);
+        setUpkeep(_upkeepContract, _upkeepRateInterval, _upkeepRateCap, _maxBaseGasPrice);
+        setInterval(_updateInterval);
     }
 
-    function setGasPrice(uint256 _gasPrice) public onlyOwner {
-        maxBaseGasPrice = _gasPrice;
-    }
-
-    function setInterval(uint256 _interval) public onlyOwner {
-        updateInterval = _interval;
+    function setInterval(uint64 _updateInterval) public onlyOwner {
+        updateInterval = _updateInterval;
     }
 
     function handleResponse(bytes memory response) internal override {

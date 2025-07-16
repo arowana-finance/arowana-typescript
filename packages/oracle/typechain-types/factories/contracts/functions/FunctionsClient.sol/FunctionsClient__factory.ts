@@ -63,6 +63,19 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  {
+    inputs: [],
+    name: "i_router",
+    outputs: [
+      {
+        internalType: "contract IFunctionsRouter",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
 ] as const;
 
 export class FunctionsClient__factory {

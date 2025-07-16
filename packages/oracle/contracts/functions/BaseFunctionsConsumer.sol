@@ -9,20 +9,37 @@ import { FunctionsClient } from './FunctionsClient.sol';
  * @title Functions Consumer contract used for Chainlink Automation.
  */
 contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSettler {
+    event SetConsumer(address indexed router);
+    event SetUpkeep(
+        address indexed upkeepContract,
+        uint64 upkeepRateInterval,
+        uint64 upkeepRateCap,
+        uint64 maxBaseGasPrice
+    );
+    event Response(bytes32 indexed requestId, bytes response, bytes err);
+
     /**
      * @dev Chainlink Settings
      */
-    address public upkeepContract;
     bytes public request;
     uint64 public subscriptionId;
     uint32 public gasLimit;
     bytes32 public donID;
     bytes32 public s_lastRequestId;
 
-    error UnexpectedRequestID(bytes32 requestId);
+    /**
+     * @dev Upkeep settings
+     *
+     * Defines upkeepContract, rate limits ( so that chainlink wouldn't drain our LINKs ), and limits on gasPrice costs
+     */
+    address public upkeepContract;
+    uint64 public upkeepRateInterval;
+    uint64 public upkeepRateCap;
+    uint64 public lastUpkeep;
+    uint64 public maxBaseGasPrice;
+    mapping(uint64 => uint64) public upkeepRates;
 
-    event SetConsumer(address indexed router, address indexed upkeepContract);
-    event Response(bytes32 indexed requestId, bytes response, bytes err);
+    error UnexpectedRequestID(bytes32 requestId);
 
     /**
      * @notice Reverts if called by anyone other than the contract owner or automation registry.
@@ -32,11 +49,24 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
         _;
     }
 
-    function setConsumer(address _router, address _upkeepContract) public onlyOwner {
+    function setConsumer(address _router) public onlyOwner {
         _initializeFuncClient(_router);
-        upkeepContract = _upkeepContract;
 
-        emit SetConsumer(_router, _upkeepContract);
+        emit SetConsumer(_router);
+    }
+
+    function setUpkeep(
+        address _upkeepContract,
+        uint64 _upkeepRateInterval,
+        uint64 _upkeepRateCap,
+        uint64 _maxBaseGasPrice
+    ) public onlyOwner {
+        upkeepContract = _upkeepContract;
+        upkeepRateInterval = _upkeepRateInterval;
+        upkeepRateCap = _upkeepRateCap;
+        maxBaseGasPrice = _maxBaseGasPrice;
+
+        emit SetUpkeep(_upkeepContract, _upkeepRateInterval, _upkeepRateCap, _maxBaseGasPrice);
     }
 
     /// @notice Update the request settings
@@ -59,20 +89,33 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
 
     /**
      * @dev Upkeep settings
-     * Use this when custom upkeep is enabled
+     * Applying rate limits from chainlink
      */
     function _checkUpkeepCondition() internal view virtual returns (bool) {
-        return false;
+        if (uint64(block.basefee) > maxBaseGasPrice) {
+            return false;
+        }
+
+        if (uint64(block.timestamp) < (lastUpkeep + upkeepRateInterval)) {
+            return false;
+        }
+
+        if (upkeepRates[getUpkeepTime(block.timestamp)] > upkeepRateCap) {
+            return false;
+        }
+
+        return true;
     }
 
     function checkUpkeep(
         bytes calldata /* checkData */
-    ) external view override cannotExecute returns (bool upkeepNeeded, bytes memory /* performData */) {
+    ) external view override returns (bool upkeepNeeded, bytes memory /* performData */) {
         return (_checkUpkeepCondition(), new bytes(0));
     }
 
     function performUpkeep(bytes calldata /* performData */) external override {
         if (_checkUpkeepCondition()) {
+            lastUpkeep = uint64(block.timestamp);
             s_lastRequestId = _sendRequest(request, subscriptionId, gasLimit, donID);
         }
     }
@@ -96,12 +139,20 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
      * Either response or error parameter will be set, but never both
      */
     function fulfillRequest(bytes32 requestId, bytes memory response, bytes memory err) internal override {
+        upkeepRates[getUpkeepTime(block.timestamp)]++;
+
         if (s_lastRequestId != requestId) {
             revert UnexpectedRequestID(requestId);
         }
+
         if (response.length != 0 && err.length == 0) {
             handleResponse(response);
         }
+
         emit Response(requestId, response, err);
+    }
+
+    function getUpkeepTime(uint256 timestamp) public view returns (uint64) {
+        return (uint64(timestamp) / upkeepRateInterval) * upkeepRateInterval;
     }
 }

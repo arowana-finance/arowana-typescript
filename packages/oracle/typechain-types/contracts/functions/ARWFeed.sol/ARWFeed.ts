@@ -33,8 +33,11 @@ export interface ARWFeedInterface extends Interface {
       | "donID"
       | "gasLimit"
       | "getTokenType"
+      | "getUpkeepTime"
       | "handleOracleFulfillment"
+      | "i_router"
       | "initialize"
+      | "lastUpkeep"
       | "latestAnswer"
       | "latestRound"
       | "latestTimestamp"
@@ -48,15 +51,18 @@ export interface ARWFeedInterface extends Interface {
       | "sendRequestCBOR"
       | "setConsumer"
       | "setFeedInfo"
-      | "setGasPrice"
       | "setInterval"
+      | "setUpkeep"
       | "settlers"
       | "subscriptionId"
       | "transferOwnership"
       | "updateAnswer"
       | "updateInterval"
       | "updateRequest"
-      | "upkeepContract",
+      | "upkeepContract"
+      | "upkeepRateCap"
+      | "upkeepRateInterval"
+      | "upkeepRates",
   ): FunctionFragment;
 
   getEvent(
@@ -69,7 +75,8 @@ export interface ARWFeedInterface extends Interface {
       | "RequestFulfilled"
       | "RequestSent"
       | "Response"
-      | "SetConsumer",
+      | "SetConsumer"
+      | "SetUpkeep",
   ): EventFragment;
 
   encodeFunctionData(
@@ -92,12 +99,21 @@ export interface ARWFeedInterface extends Interface {
     values?: undefined,
   ): string;
   encodeFunctionData(
+    functionFragment: "getUpkeepTime",
+    values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
     functionFragment: "handleOracleFulfillment",
     values: [BytesLike, BytesLike, BytesLike],
   ): string;
+  encodeFunctionData(functionFragment: "i_router", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [AddressLike],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "lastUpkeep",
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: "latestAnswer",
@@ -139,19 +155,26 @@ export interface ARWFeedInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setConsumer",
-    values: [AddressLike, AddressLike],
+    values: [AddressLike],
   ): string;
   encodeFunctionData(
     functionFragment: "setFeedInfo",
-    values: [AddressLike, AddressLike, BigNumberish, BigNumberish],
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setGasPrice",
-    values: [BigNumberish],
+    values: [
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+    ],
   ): string;
   encodeFunctionData(
     functionFragment: "setInterval",
     values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setUpkeep",
+    values: [AddressLike, BigNumberish, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(functionFragment: "settlers", values?: undefined): string;
   encodeFunctionData(
@@ -178,6 +201,18 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "upkeepContract",
     values?: undefined,
   ): string;
+  encodeFunctionData(
+    functionFragment: "upkeepRateCap",
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upkeepRateInterval",
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upkeepRates",
+    values: [BigNumberish],
+  ): string;
 
   decodeFunctionResult(functionFragment: "addSettler", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "answers", data: BytesLike): Result;
@@ -193,10 +228,16 @@ export interface ARWFeedInterface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getUpkeepTime",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "handleOracleFulfillment",
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(functionFragment: "i_router", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "lastUpkeep", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "latestAnswer",
     data: BytesLike,
@@ -244,13 +285,10 @@ export interface ARWFeedInterface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setGasPrice",
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "setInterval",
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(functionFragment: "setUpkeep", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "settlers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "subscriptionId",
@@ -274,6 +312,18 @@ export interface ARWFeedInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "upkeepContract",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upkeepRateCap",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upkeepRateInterval",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upkeepRates",
     data: BytesLike,
   ): Result;
 }
@@ -392,11 +442,35 @@ export namespace ResponseEvent {
 }
 
 export namespace SetConsumerEvent {
-  export type InputTuple = [router: AddressLike, upkeepContract: AddressLike];
-  export type OutputTuple = [router: string, upkeepContract: string];
+  export type InputTuple = [router: AddressLike];
+  export type OutputTuple = [router: string];
   export interface OutputObject {
     router: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace SetUpkeepEvent {
+  export type InputTuple = [
+    upkeepContract: AddressLike,
+    upkeepRateInterval: BigNumberish,
+    upkeepRateCap: BigNumberish,
+    maxBaseGasPrice: BigNumberish,
+  ];
+  export type OutputTuple = [
+    upkeepContract: string,
+    upkeepRateInterval: bigint,
+    upkeepRateCap: bigint,
+    maxBaseGasPrice: bigint,
+  ];
+  export interface OutputObject {
     upkeepContract: string;
+    upkeepRateInterval: bigint;
+    upkeepRateCap: bigint;
+    maxBaseGasPrice: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -469,17 +543,27 @@ export interface ARWFeed extends BaseContract {
 
   getTokenType: TypedContractMethod<[], [bigint], "view">;
 
+  getUpkeepTime: TypedContractMethod<
+    [timestamp: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
   handleOracleFulfillment: TypedContractMethod<
     [requestId: BytesLike, response: BytesLike, err: BytesLike],
     [void],
     "nonpayable"
   >;
 
+  i_router: TypedContractMethod<[], [string], "view">;
+
   initialize: TypedContractMethod<
     [_initOwner: AddressLike],
     [void],
     "nonpayable"
   >;
+
+  lastUpkeep: TypedContractMethod<[], [bigint], "view">;
 
   latestAnswer: TypedContractMethod<[], [bigint], "view">;
 
@@ -508,7 +592,7 @@ export interface ARWFeed extends BaseContract {
   sendRequestCBOR: TypedContractMethod<[], [string], "nonpayable">;
 
   setConsumer: TypedContractMethod<
-    [_router: AddressLike, _upkeepContract: AddressLike],
+    [_router: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -517,21 +601,28 @@ export interface ARWFeed extends BaseContract {
     [
       _router: AddressLike,
       _upkeepContract: AddressLike,
-      _gasPrice: BigNumberish,
-      _interval: BigNumberish,
+      _upkeepRateInterval: BigNumberish,
+      _upkeepRateCap: BigNumberish,
+      _maxBaseGasPrice: BigNumberish,
+      _updateInterval: BigNumberish,
     ],
     [void],
     "nonpayable"
   >;
 
-  setGasPrice: TypedContractMethod<
-    [_gasPrice: BigNumberish],
+  setInterval: TypedContractMethod<
+    [_updateInterval: BigNumberish],
     [void],
     "nonpayable"
   >;
 
-  setInterval: TypedContractMethod<
-    [_interval: BigNumberish],
+  setUpkeep: TypedContractMethod<
+    [
+      _upkeepContract: AddressLike,
+      _upkeepRateInterval: BigNumberish,
+      _upkeepRateCap: BigNumberish,
+      _maxBaseGasPrice: BigNumberish,
+    ],
     [void],
     "nonpayable"
   >;
@@ -567,6 +658,12 @@ export interface ARWFeed extends BaseContract {
 
   upkeepContract: TypedContractMethod<[], [string], "view">;
 
+  upkeepRateCap: TypedContractMethod<[], [bigint], "view">;
+
+  upkeepRateInterval: TypedContractMethod<[], [bigint], "view">;
+
+  upkeepRates: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment,
   ): T;
@@ -597,6 +694,9 @@ export interface ARWFeed extends BaseContract {
     nameOrSignature: "getTokenType",
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "getUpkeepTime",
+  ): TypedContractMethod<[timestamp: BigNumberish], [bigint], "view">;
+  getFunction(
     nameOrSignature: "handleOracleFulfillment",
   ): TypedContractMethod<
     [requestId: BytesLike, response: BytesLike, err: BytesLike],
@@ -604,8 +704,14 @@ export interface ARWFeed extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "i_router",
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "initialize",
   ): TypedContractMethod<[_initOwner: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "lastUpkeep",
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "latestAnswer",
   ): TypedContractMethod<[], [bigint], "view">;
@@ -641,29 +747,36 @@ export interface ARWFeed extends BaseContract {
   ): TypedContractMethod<[], [string], "nonpayable">;
   getFunction(
     nameOrSignature: "setConsumer",
-  ): TypedContractMethod<
-    [_router: AddressLike, _upkeepContract: AddressLike],
-    [void],
-    "nonpayable"
-  >;
+  ): TypedContractMethod<[_router: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "setFeedInfo",
   ): TypedContractMethod<
     [
       _router: AddressLike,
       _upkeepContract: AddressLike,
-      _gasPrice: BigNumberish,
-      _interval: BigNumberish,
+      _upkeepRateInterval: BigNumberish,
+      _upkeepRateCap: BigNumberish,
+      _maxBaseGasPrice: BigNumberish,
+      _updateInterval: BigNumberish,
     ],
     [void],
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "setGasPrice",
-  ): TypedContractMethod<[_gasPrice: BigNumberish], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "setInterval",
-  ): TypedContractMethod<[_interval: BigNumberish], [void], "nonpayable">;
+  ): TypedContractMethod<[_updateInterval: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setUpkeep",
+  ): TypedContractMethod<
+    [
+      _upkeepContract: AddressLike,
+      _upkeepRateInterval: BigNumberish,
+      _upkeepRateCap: BigNumberish,
+      _maxBaseGasPrice: BigNumberish,
+    ],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "settlers",
   ): TypedContractMethod<[], [string[]], "view">;
@@ -694,6 +807,15 @@ export interface ARWFeed extends BaseContract {
   getFunction(
     nameOrSignature: "upkeepContract",
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "upkeepRateCap",
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "upkeepRateInterval",
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "upkeepRates",
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
   getEvent(
     key: "AddSettler",
@@ -757,6 +879,13 @@ export interface ARWFeed extends BaseContract {
     SetConsumerEvent.InputTuple,
     SetConsumerEvent.OutputTuple,
     SetConsumerEvent.OutputObject
+  >;
+  getEvent(
+    key: "SetUpkeep",
+  ): TypedContractEvent<
+    SetUpkeepEvent.InputTuple,
+    SetUpkeepEvent.OutputTuple,
+    SetUpkeepEvent.OutputObject
   >;
 
   filters: {
@@ -848,7 +977,7 @@ export interface ARWFeed extends BaseContract {
       ResponseEvent.OutputObject
     >;
 
-    "SetConsumer(address,address)": TypedContractEvent<
+    "SetConsumer(address)": TypedContractEvent<
       SetConsumerEvent.InputTuple,
       SetConsumerEvent.OutputTuple,
       SetConsumerEvent.OutputObject
@@ -857,6 +986,17 @@ export interface ARWFeed extends BaseContract {
       SetConsumerEvent.InputTuple,
       SetConsumerEvent.OutputTuple,
       SetConsumerEvent.OutputObject
+    >;
+
+    "SetUpkeep(address,uint64,uint64,uint64)": TypedContractEvent<
+      SetUpkeepEvent.InputTuple,
+      SetUpkeepEvent.OutputTuple,
+      SetUpkeepEvent.OutputObject
+    >;
+    SetUpkeep: TypedContractEvent<
+      SetUpkeepEvent.InputTuple,
+      SetUpkeepEvent.OutputTuple,
+      SetUpkeepEvent.OutputObject
     >;
   };
 }

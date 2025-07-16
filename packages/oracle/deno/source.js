@@ -82,7 +82,13 @@ function chunk(arr, size) {
 
 const provider = new FunctionsJsonRpcProvider(RPC_URL);
 const dataFeedContract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
-const dataFeedTimestamp = Number(await dataFeedContract.latestTimestamp());
+const dataFeedTimestamp = await (async () => {
+    try {
+        return Number(await dataFeedContract.latestTimestamp());
+    } catch {
+        return 10000000000000;
+    }
+})();
 
 const vwapPrices = await (async () => {
     try {
@@ -122,7 +128,7 @@ if (!nums.length) {
     return ethers.getBytes('0x');
 }
 
-const chunked = chunk(nums, 14)[0];
+const chunked = chunk(nums, 10)[0];
 
 const encoded = ethers.solidityPacked(chunked.map(() => 'uint64'), chunked);
 
