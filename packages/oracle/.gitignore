@@ -24,3 +24,4 @@ docs/.vitepress/cache
 .env
 
 price*.jsonl
+arw_*.txt

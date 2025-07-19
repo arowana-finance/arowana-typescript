@@ -28,13 +28,14 @@ contract ARWFeed is DataFeed, BaseFunctionsConsumer {
     function setFeedInfo(
         address _router,
         address _upkeepContract,
+        uint64 _upkeepInterval,
         uint64 _upkeepRateInterval,
         uint64 _upkeepRateCap,
         uint64 _maxBaseGasPrice,
         uint64 _updateInterval
     ) public onlyOwner {
         setConsumer(_router);
-        setUpkeep(_upkeepContract, _upkeepRateInterval, _upkeepRateCap, _maxBaseGasPrice);
+        setUpkeep(_upkeepContract, _upkeepInterval, _upkeepRateInterval, _upkeepRateCap, _maxBaseGasPrice);
         setInterval(_updateInterval);
     }
 

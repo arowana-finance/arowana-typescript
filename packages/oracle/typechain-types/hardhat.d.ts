@@ -18,6 +18,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.Lock__factory>;
     getContractFactory(
+      name: "IERC20Mintable",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.IERC20Mintable__factory>;
+    getContractFactory(
+      name: "IERC20Exp",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.IERC20Exp__factory>;
+    getContractFactory(
       name: "FunctionsClient",
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.FunctionsClient__factory>;
@@ -38,9 +46,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.DataFeed__factory>;
     getContractFactory(
+      name: "ARWSupply",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.ARWSupply__factory>;
+    getContractFactory(
       name: "SafeCast",
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.SafeCast__factory>;
+    getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
       name: "ContextUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions,
@@ -53,6 +69,18 @@ declare module "hardhat/types/runtime" {
       name: "OwnableUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.OwnableUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "IERC20Permit",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.IERC20Permit__factory>;
+    getContractFactory(
+      name: "IERC20Metadata",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.IERC20Metadata__factory>;
     getContractFactory(
       name: "FunctionsRequest",
       signerOrOptions?: ethers.Signer | FactoryOptions,
@@ -84,6 +112,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer,
     ): Promise<Contracts.Lock>;
     getContractAt(
+      name: "IERC20Mintable",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.IERC20Mintable>;
+    getContractAt(
+      name: "IERC20Exp",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.IERC20Exp>;
+    getContractAt(
       name: "FunctionsClient",
       address: string | ethers.Addressable,
       signer?: ethers.Signer,
@@ -109,10 +147,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer,
     ): Promise<Contracts.DataFeed>;
     getContractAt(
+      name: "ARWSupply",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.ARWSupply>;
+    getContractAt(
       name: "SafeCast",
       address: string | ethers.Addressable,
       signer?: ethers.Signer,
     ): Promise<Contracts.SafeCast>;
+    getContractAt(
+      name: "IERC20",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.IERC20>;
     getContractAt(
       name: "ContextUpgradeable",
       address: string | ethers.Addressable,
@@ -128,6 +176,21 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer,
     ): Promise<Contracts.OwnableUpgradeable>;
+    getContractAt(
+      name: "IERC20",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "IERC20Permit",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.IERC20Permit>;
+    getContractAt(
+      name: "IERC20Metadata",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.IERC20Metadata>;
     getContractAt(
       name: "FunctionsRequest",
       address: string | ethers.Addressable,
@@ -164,6 +227,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.Lock>;
     deployContract(
+      name: "IERC20Mintable",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Mintable>;
+    deployContract(
+      name: "IERC20Exp",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Exp>;
+    deployContract(
       name: "FunctionsClient",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.FunctionsClient>;
@@ -184,9 +255,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.DataFeed>;
     deployContract(
+      name: "ARWSupply",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.ARWSupply>;
+    deployContract(
       name: "SafeCast",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.SafeCast>;
+    deployContract(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20>;
     deployContract(
       name: "ContextUpgradeable",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
@@ -199,6 +278,18 @@ declare module "hardhat/types/runtime" {
       name: "OwnableUpgradeable",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.OwnableUpgradeable>;
+    deployContract(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20>;
+    deployContract(
+      name: "IERC20Permit",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Permit>;
+    deployContract(
+      name: "IERC20Metadata",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Metadata>;
     deployContract(
       name: "FunctionsRequest",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
@@ -230,6 +321,16 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.Lock>;
     deployContract(
+      name: "IERC20Mintable",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Mintable>;
+    deployContract(
+      name: "IERC20Exp",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Exp>;
+    deployContract(
       name: "FunctionsClient",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions,
@@ -255,10 +356,20 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.DataFeed>;
     deployContract(
+      name: "ARWSupply",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.ARWSupply>;
+    deployContract(
       name: "SafeCast",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.SafeCast>;
+    deployContract(
+      name: "IERC20",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20>;
     deployContract(
       name: "ContextUpgradeable",
       args: any[],
@@ -274,6 +385,21 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.OwnableUpgradeable>;
+    deployContract(
+      name: "IERC20",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20>;
+    deployContract(
+      name: "IERC20Permit",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Permit>;
+    deployContract(
+      name: "IERC20Metadata",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.IERC20Metadata>;
     deployContract(
       name: "FunctionsRequest",
       args: any[],

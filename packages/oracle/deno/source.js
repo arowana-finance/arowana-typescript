@@ -3,7 +3,7 @@ const ethers = await import("npm:ethers@6.15.0");
 
 const VWAP_PRICE_URL = 'https://raw.githubusercontent.com/arowana-finance/arowana-data/main/arw_price/price_vwap.jsonl';
 const RPC_URL = 'https://sepolia-rollup.arbitrum.io/rpc';
-const CONTRACT_ADDRESS = '0x';
+const CONTRACT_ADDRESS = '0x04A000cE99DF76215646e4Fe8f0780D120790ab5';
 const ORACLE_DECIMALS = 8;
 
 const abi = [
@@ -125,7 +125,7 @@ const { nums } = vwapPrices
 
 // Nothing to update, just send zero length bytes to emit contract only
 if (!nums.length) {
-    return ethers.getBytes('0x');
+    return ethers.getBytes('0x01');
 }
 
 const chunked = chunk(nums, 10)[0];

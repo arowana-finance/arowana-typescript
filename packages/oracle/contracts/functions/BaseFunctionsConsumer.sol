@@ -12,6 +12,7 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
     event SetConsumer(address indexed router);
     event SetUpkeep(
         address indexed upkeepContract,
+        uint64 upkeepInterval,
         uint64 upkeepRateInterval,
         uint64 upkeepRateCap,
         uint64 maxBaseGasPrice
@@ -33,6 +34,7 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
      * Defines upkeepContract, rate limits ( so that chainlink wouldn't drain our LINKs ), and limits on gasPrice costs
      */
     address public upkeepContract;
+    uint64 public upkeepInterval;
     uint64 public upkeepRateInterval;
     uint64 public upkeepRateCap;
     uint64 public lastUpkeep;
@@ -57,16 +59,24 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
 
     function setUpkeep(
         address _upkeepContract,
+        uint64 _upkeepInterval,
         uint64 _upkeepRateInterval,
         uint64 _upkeepRateCap,
         uint64 _maxBaseGasPrice
     ) public onlyOwner {
         upkeepContract = _upkeepContract;
+        upkeepInterval = _upkeepInterval;
         upkeepRateInterval = _upkeepRateInterval;
         upkeepRateCap = _upkeepRateCap;
         maxBaseGasPrice = _maxBaseGasPrice;
 
-        emit SetUpkeep(_upkeepContract, _upkeepRateInterval, _upkeepRateCap, _maxBaseGasPrice);
+        emit SetUpkeep(
+            _upkeepContract,
+            _upkeepInterval,
+            _upkeepRateInterval,
+            _upkeepRateCap,
+            _maxBaseGasPrice
+        );
     }
 
     /// @notice Update the request settings
@@ -96,7 +106,7 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
             return false;
         }
 
-        if (uint64(block.timestamp) < (lastUpkeep + upkeepRateInterval)) {
+        if (uint64(block.timestamp) < (lastUpkeep + upkeepInterval)) {
             return false;
         }
 
@@ -145,7 +155,7 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
             revert UnexpectedRequestID(requestId);
         }
 
-        if (response.length != 0 && err.length == 0) {
+        if (response.length > 1 && err.length == 0) {
             handleResponse(response);
         }
 

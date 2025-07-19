@@ -1,6 +1,6 @@
 {
     "name": "@arowanadao/oracle",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Price / Supply oracle for Arowana Finance",
     "license": "MIT",
     "author": "Arowana",
@@ -46,7 +46,9 @@
         "ci-publish": "npm publish --access public"
     },
     "dependencies": {
-        "ccxt": "^4.4.93"
+        "ccxt": "^4.4.93",
+        "ethers": "^6.15.0",
+        "ethers-opt": "^1.0.4"
     },
     "devDependencies": {
         "@arowanadao/eslint": "*",
@@ -72,8 +74,6 @@
         "chai": "^5.2.0",
         "cross-env": "^7.0.3",
         "dotenv": "^17.0.1",
-        "ethers": "^6.15.0",
-        "ethers-opt": "^1.0.4",
         "glob": "^11.0.3",
         "globby": "11.1.0",
         "hardhat": "^2.25.0",
