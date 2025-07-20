@@ -1,0 +1,36 @@
+{
+    "name": "arowana-typescript",
+    "private": true,
+    "version": "1.0.6",
+    "description": "Monorepo for Arowana Libraries",
+    "license": "MIT",
+    "author": "Arowana Finance",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/arowana-finance/arowana-typescript.git"
+    },
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ],
+        "nohoist": [
+            "**",
+            "**/**"
+        ]
+    },
+    "scripts": {
+        "run-all": "yarn workspaces run",
+        "lint": "yarn run-all lint",
+        "build": "yarn run-all build",
+        "start": "yarn run-all start",
+        "test": "yarn run-all test",
+        "ci-publish": "node scripts/ci.js && yarn run-all ci-publish"
+    },
+    "resolutions": {
+        "@types/minimatch": "5.1.2",
+        "fast-glob": ">=3.3.3",
+        "globby": "11.1.0",
+        "prettier": "^3.6.2"
+    }
+}
