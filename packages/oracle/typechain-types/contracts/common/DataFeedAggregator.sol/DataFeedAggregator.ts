@@ -23,11 +23,12 @@ import type {
   TypedContractMethod,
 } from "../../../common.js";
 
-export interface DataFeedInterface extends Interface {
+export interface DataFeedAggregatorInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "addSettler"
+      | "aggregator"
       | "asset"
+      | "callAsset"
       | "decimals"
       | "deploymentTimestamp"
       | "description"
@@ -41,35 +42,31 @@ export interface DataFeedInterface extends Interface {
       | "latestRoundData"
       | "latestTimestamp"
       | "owner"
-      | "removeSettler"
+      | "phaseAggregators"
+      | "phaseId"
+      | "proposeAggregator"
       | "renounceOwnership"
-      | "setAsset"
-      | "setDescription"
-      | "setFeedInfo"
-      | "setVersion"
-      | "settlers"
       | "transferOwnership"
-      | "updateAnswer"
       | "version",
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
-      | "AddSettler"
-      | "AnswerUpdated"
+      | "FeedConfirmed"
+      | "FeedProposed"
       | "Initialized"
-      | "NewAsset"
-      | "NewDescription"
-      | "NewRound"
-      | "OwnershipTransferred"
-      | "RemoveSettler",
+      | "OwnershipTransferred",
   ): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "addSettler",
-    values: [AddressLike],
+    functionFragment: "aggregator",
+    values?: undefined,
   ): string;
   encodeFunctionData(functionFragment: "asset", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "callAsset",
+    values: [AddressLike],
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "deploymentTimestamp",
@@ -97,7 +94,7 @@ export interface DataFeedInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [AddressLike],
+    values: [AddressLike, AddressLike],
   ): string;
   encodeFunctionData(
     functionFragment: "latestAnswer",
@@ -117,7 +114,12 @@ export interface DataFeedInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "removeSettler",
+    functionFragment: "phaseAggregators",
+    values: [BigNumberish],
+  ): string;
+  encodeFunctionData(functionFragment: "phaseId", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "proposeAggregator",
     values: [AddressLike],
   ): string;
   encodeFunctionData(
@@ -125,34 +127,14 @@ export interface DataFeedInterface extends Interface {
     values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "setAsset",
-    values: [AddressLike],
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setDescription",
-    values: [string],
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setFeedInfo",
-    values: [AddressLike, string],
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setVersion",
-    values: [BigNumberish],
-  ): string;
-  encodeFunctionData(functionFragment: "settlers", values?: undefined): string;
-  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [AddressLike],
   ): string;
-  encodeFunctionData(
-    functionFragment: "updateAnswer",
-    values: [BigNumberish],
-  ): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "addSettler", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "aggregator", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "asset", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "callAsset", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "deploymentTimestamp",
@@ -194,40 +176,49 @@ export interface DataFeedInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "removeSettler",
+    functionFragment: "phaseAggregators",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(functionFragment: "phaseId", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "proposeAggregator",
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "setAsset", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setDescription",
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setFeedInfo",
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(functionFragment: "setVersion", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "settlers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "updateAnswer",
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
 }
 
-export namespace AddSettlerEvent {
-  export type InputTuple = [newSettler: AddressLike];
-  export type OutputTuple = [newSettler: string];
+export namespace FeedConfirmedEvent {
+  export type InputTuple = [
+    asset: AddressLike,
+    denomination: AddressLike,
+    latestAggregator: AddressLike,
+    previousAggregator: AddressLike,
+    nextPhaseId: BigNumberish,
+    sender: AddressLike,
+  ];
+  export type OutputTuple = [
+    asset: string,
+    denomination: string,
+    latestAggregator: string,
+    previousAggregator: string,
+    nextPhaseId: bigint,
+    sender: string,
+  ];
   export interface OutputObject {
-    newSettler: string;
+    asset: string;
+    denomination: string;
+    latestAggregator: string;
+    previousAggregator: string;
+    nextPhaseId: bigint;
+    sender: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -235,21 +226,27 @@ export namespace AddSettlerEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace AnswerUpdatedEvent {
+export namespace FeedProposedEvent {
   export type InputTuple = [
-    current: BigNumberish,
-    roundId: BigNumberish,
-    updatedAt: BigNumberish,
+    asset: AddressLike,
+    denomination: AddressLike,
+    proposedAggregator: AddressLike,
+    currentAggregator: AddressLike,
+    sender: AddressLike,
   ];
   export type OutputTuple = [
-    current: bigint,
-    roundId: bigint,
-    updatedAt: bigint,
+    asset: string,
+    denomination: string,
+    proposedAggregator: string,
+    currentAggregator: string,
+    sender: string,
   ];
   export interface OutputObject {
-    current: bigint;
-    roundId: bigint;
-    updatedAt: bigint;
+    asset: string;
+    denomination: string;
+    proposedAggregator: string;
+    currentAggregator: string;
+    sender: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -262,52 +259,6 @@ export namespace InitializedEvent {
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewAssetEvent {
-  export type InputTuple = [asset: AddressLike];
-  export type OutputTuple = [asset: string];
-  export interface OutputObject {
-    asset: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewDescriptionEvent {
-  export type InputTuple = [description: string];
-  export type OutputTuple = [description: string];
-  export interface OutputObject {
-    description: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewRoundEvent {
-  export type InputTuple = [
-    roundId: BigNumberish,
-    startedBy: AddressLike,
-    startedAt: BigNumberish,
-  ];
-  export type OutputTuple = [
-    roundId: bigint,
-    startedBy: string,
-    startedAt: bigint,
-  ];
-  export interface OutputObject {
-    roundId: bigint;
-    startedBy: string;
-    startedAt: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -328,23 +279,11 @@ export namespace OwnershipTransferredEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace RemoveSettlerEvent {
-  export type InputTuple = [oldSettler: AddressLike];
-  export type OutputTuple = [oldSettler: string];
-  export interface OutputObject {
-    oldSettler: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export interface DataFeed extends BaseContract {
-  connect(runner?: ContractRunner | null): DataFeed;
+export interface DataFeedAggregator extends BaseContract {
+  connect(runner?: ContractRunner | null): DataFeedAggregator;
   waitForDeployment(): Promise<this>;
 
-  interface: DataFeedInterface;
+  interface: DataFeedAggregatorInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -383,13 +322,11 @@ export interface DataFeed extends BaseContract {
     event?: TCEvent,
   ): Promise<this>;
 
-  addSettler: TypedContractMethod<
-    [_settler: AddressLike],
-    [void],
-    "nonpayable"
-  >;
+  aggregator: TypedContractMethod<[], [string], "view">;
 
   asset: TypedContractMethod<[], [string], "view">;
+
+  callAsset: TypedContractMethod<[_aggregator: AddressLike], [string], "view">;
 
   decimals: TypedContractMethod<[], [bigint], "view">;
 
@@ -397,32 +334,24 @@ export interface DataFeed extends BaseContract {
 
   description: TypedContractMethod<[], [string], "view">;
 
-  getAnswer: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getAnswer: TypedContractMethod<[_roundId: BigNumberish], [bigint], "view">;
 
   getRoundData: TypedContractMethod<
     [_roundId: BigNumberish],
-    [
-      [bigint, bigint, bigint, bigint, bigint] & {
-        roundId: bigint;
-        answer: bigint;
-        startedAt: bigint;
-        updatedAt: bigint;
-        answeredInRound: bigint;
-      },
-    ],
+    [[bigint, bigint, bigint, bigint, bigint]],
     "view"
   >;
 
-  getTimestamp: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getTimestamp: TypedContractMethod<[_roundId: BigNumberish], [bigint], "view">;
 
   getTimestampAnswer: TypedContractMethod<
-    [arg0: BigNumberish],
+    [_timestamp: BigNumberish],
     [bigint],
     "view"
   >;
 
   initialize: TypedContractMethod<
-    [_initOwner: AddressLike],
+    [_initOwner: AddressLike, _aggregator: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -441,44 +370,20 @@ export interface DataFeed extends BaseContract {
 
   owner: TypedContractMethod<[], [string], "view">;
 
-  removeSettler: TypedContractMethod<
-    [_settler: AddressLike],
+  phaseAggregators: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
+
+  phaseId: TypedContractMethod<[], [bigint], "view">;
+
+  proposeAggregator: TypedContractMethod<
+    [_aggregator: AddressLike],
     [void],
     "nonpayable"
   >;
 
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
 
-  setAsset: TypedContractMethod<[_asset: AddressLike], [void], "nonpayable">;
-
-  setDescription: TypedContractMethod<
-    [_description: string],
-    [void],
-    "nonpayable"
-  >;
-
-  setFeedInfo: TypedContractMethod<
-    [_asset: AddressLike, _description: string],
-    [void],
-    "nonpayable"
-  >;
-
-  setVersion: TypedContractMethod<
-    [_version: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  settlers: TypedContractMethod<[], [string[]], "view">;
-
   transferOwnership: TypedContractMethod<
     [newOwner: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  updateAnswer: TypedContractMethod<
-    [newAnswer: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -490,11 +395,14 @@ export interface DataFeed extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "addSettler",
-  ): TypedContractMethod<[_settler: AddressLike], [void], "nonpayable">;
+    nameOrSignature: "aggregator",
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "asset",
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "callAsset",
+  ): TypedContractMethod<[_aggregator: AddressLike], [string], "view">;
   getFunction(
     nameOrSignature: "decimals",
   ): TypedContractMethod<[], [bigint], "view">;
@@ -506,31 +414,27 @@ export interface DataFeed extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getAnswer",
-  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  ): TypedContractMethod<[_roundId: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "getRoundData",
   ): TypedContractMethod<
     [_roundId: BigNumberish],
-    [
-      [bigint, bigint, bigint, bigint, bigint] & {
-        roundId: bigint;
-        answer: bigint;
-        startedAt: bigint;
-        updatedAt: bigint;
-        answeredInRound: bigint;
-      },
-    ],
+    [[bigint, bigint, bigint, bigint, bigint]],
     "view"
   >;
   getFunction(
     nameOrSignature: "getTimestamp",
-  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  ): TypedContractMethod<[_roundId: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "getTimestampAnswer",
-  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  ): TypedContractMethod<[_timestamp: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "initialize",
-  ): TypedContractMethod<[_initOwner: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<
+    [_initOwner: AddressLike, _aggregator: AddressLike],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "latestAnswer",
   ): TypedContractMethod<[], [bigint], "view">;
@@ -551,53 +455,37 @@ export interface DataFeed extends BaseContract {
     nameOrSignature: "owner",
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "removeSettler",
-  ): TypedContractMethod<[_settler: AddressLike], [void], "nonpayable">;
+    nameOrSignature: "phaseAggregators",
+  ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "phaseId",
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "proposeAggregator",
+  ): TypedContractMethod<[_aggregator: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "renounceOwnership",
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "setAsset",
-  ): TypedContractMethod<[_asset: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setDescription",
-  ): TypedContractMethod<[_description: string], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setFeedInfo",
-  ): TypedContractMethod<
-    [_asset: AddressLike, _description: string],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "setVersion",
-  ): TypedContractMethod<[_version: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "settlers",
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
     nameOrSignature: "transferOwnership",
   ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "updateAnswer",
-  ): TypedContractMethod<[newAnswer: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "version",
   ): TypedContractMethod<[], [bigint], "view">;
 
   getEvent(
-    key: "AddSettler",
+    key: "FeedConfirmed",
   ): TypedContractEvent<
-    AddSettlerEvent.InputTuple,
-    AddSettlerEvent.OutputTuple,
-    AddSettlerEvent.OutputObject
+    FeedConfirmedEvent.InputTuple,
+    FeedConfirmedEvent.OutputTuple,
+    FeedConfirmedEvent.OutputObject
   >;
   getEvent(
-    key: "AnswerUpdated",
+    key: "FeedProposed",
   ): TypedContractEvent<
-    AnswerUpdatedEvent.InputTuple,
-    AnswerUpdatedEvent.OutputTuple,
-    AnswerUpdatedEvent.OutputObject
+    FeedProposedEvent.InputTuple,
+    FeedProposedEvent.OutputTuple,
+    FeedProposedEvent.OutputObject
   >;
   getEvent(
     key: "Initialized",
@@ -607,62 +495,34 @@ export interface DataFeed extends BaseContract {
     InitializedEvent.OutputObject
   >;
   getEvent(
-    key: "NewAsset",
-  ): TypedContractEvent<
-    NewAssetEvent.InputTuple,
-    NewAssetEvent.OutputTuple,
-    NewAssetEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewDescription",
-  ): TypedContractEvent<
-    NewDescriptionEvent.InputTuple,
-    NewDescriptionEvent.OutputTuple,
-    NewDescriptionEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewRound",
-  ): TypedContractEvent<
-    NewRoundEvent.InputTuple,
-    NewRoundEvent.OutputTuple,
-    NewRoundEvent.OutputObject
-  >;
-  getEvent(
     key: "OwnershipTransferred",
   ): TypedContractEvent<
     OwnershipTransferredEvent.InputTuple,
     OwnershipTransferredEvent.OutputTuple,
     OwnershipTransferredEvent.OutputObject
   >;
-  getEvent(
-    key: "RemoveSettler",
-  ): TypedContractEvent<
-    RemoveSettlerEvent.InputTuple,
-    RemoveSettlerEvent.OutputTuple,
-    RemoveSettlerEvent.OutputObject
-  >;
 
   filters: {
-    "AddSettler(address)": TypedContractEvent<
-      AddSettlerEvent.InputTuple,
-      AddSettlerEvent.OutputTuple,
-      AddSettlerEvent.OutputObject
+    "FeedConfirmed(address,address,address,address,uint16,address)": TypedContractEvent<
+      FeedConfirmedEvent.InputTuple,
+      FeedConfirmedEvent.OutputTuple,
+      FeedConfirmedEvent.OutputObject
     >;
-    AddSettler: TypedContractEvent<
-      AddSettlerEvent.InputTuple,
-      AddSettlerEvent.OutputTuple,
-      AddSettlerEvent.OutputObject
+    FeedConfirmed: TypedContractEvent<
+      FeedConfirmedEvent.InputTuple,
+      FeedConfirmedEvent.OutputTuple,
+      FeedConfirmedEvent.OutputObject
     >;
 
-    "AnswerUpdated(int256,uint256,uint256)": TypedContractEvent<
-      AnswerUpdatedEvent.InputTuple,
-      AnswerUpdatedEvent.OutputTuple,
-      AnswerUpdatedEvent.OutputObject
+    "FeedProposed(address,address,address,address,address)": TypedContractEvent<
+      FeedProposedEvent.InputTuple,
+      FeedProposedEvent.OutputTuple,
+      FeedProposedEvent.OutputObject
     >;
-    AnswerUpdated: TypedContractEvent<
-      AnswerUpdatedEvent.InputTuple,
-      AnswerUpdatedEvent.OutputTuple,
-      AnswerUpdatedEvent.OutputObject
+    FeedProposed: TypedContractEvent<
+      FeedProposedEvent.InputTuple,
+      FeedProposedEvent.OutputTuple,
+      FeedProposedEvent.OutputObject
     >;
 
     "Initialized(uint64)": TypedContractEvent<
@@ -676,39 +536,6 @@ export interface DataFeed extends BaseContract {
       InitializedEvent.OutputObject
     >;
 
-    "NewAsset(address)": TypedContractEvent<
-      NewAssetEvent.InputTuple,
-      NewAssetEvent.OutputTuple,
-      NewAssetEvent.OutputObject
-    >;
-    NewAsset: TypedContractEvent<
-      NewAssetEvent.InputTuple,
-      NewAssetEvent.OutputTuple,
-      NewAssetEvent.OutputObject
-    >;
-
-    "NewDescription(string)": TypedContractEvent<
-      NewDescriptionEvent.InputTuple,
-      NewDescriptionEvent.OutputTuple,
-      NewDescriptionEvent.OutputObject
-    >;
-    NewDescription: TypedContractEvent<
-      NewDescriptionEvent.InputTuple,
-      NewDescriptionEvent.OutputTuple,
-      NewDescriptionEvent.OutputObject
-    >;
-
-    "NewRound(uint256,address,uint256)": TypedContractEvent<
-      NewRoundEvent.InputTuple,
-      NewRoundEvent.OutputTuple,
-      NewRoundEvent.OutputObject
-    >;
-    NewRound: TypedContractEvent<
-      NewRoundEvent.InputTuple,
-      NewRoundEvent.OutputTuple,
-      NewRoundEvent.OutputObject
-    >;
-
     "OwnershipTransferred(address,address)": TypedContractEvent<
       OwnershipTransferredEvent.InputTuple,
       OwnershipTransferredEvent.OutputTuple,
@@ -718,17 +545,6 @@ export interface DataFeed extends BaseContract {
       OwnershipTransferredEvent.InputTuple,
       OwnershipTransferredEvent.OutputTuple,
       OwnershipTransferredEvent.OutputObject
-    >;
-
-    "RemoveSettler(address)": TypedContractEvent<
-      RemoveSettlerEvent.InputTuple,
-      RemoveSettlerEvent.OutputTuple,
-      RemoveSettlerEvent.OutputObject
-    >;
-    RemoveSettler: TypedContractEvent<
-      RemoveSettlerEvent.InputTuple,
-      RemoveSettlerEvent.OutputTuple,
-      RemoveSettlerEvent.OutputObject
     >;
   };
 }

@@ -22,6 +22,8 @@ export type { ARWFeed } from "./contracts/functions/ARWFeed.sol/ARWFeed.js";
 export { ARWFeed__factory } from "./factories/contracts/functions/ARWFeed.sol/ARWFeed__factory.js";
 export type { WithSettler } from "./contracts/common/WithSettler.sol/WithSettler.js";
 export { WithSettler__factory } from "./factories/contracts/common/WithSettler.sol/WithSettler__factory.js";
+export type { DataFeedAggregator } from "./contracts/common/DataFeedAggregator.sol/DataFeedAggregator.js";
+export { DataFeedAggregator__factory } from "./factories/contracts/common/DataFeedAggregator.sol/DataFeedAggregator__factory.js";
 export type { DataFeed } from "./contracts/common/DataFeed.sol/DataFeed.js";
 export { DataFeed__factory } from "./factories/contracts/common/DataFeed.sol/DataFeed__factory.js";
 export type { ARWSupply } from "./contracts/ARWSupply.sol/ARWSupply.js";

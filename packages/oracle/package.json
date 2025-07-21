@@ -46,6 +46,10 @@
         "ci-publish": "npm publish --access public"
     },
     "dependencies": {
+        "@chainlink/contracts": "^1.4.0",
+        "@chainlink/functions-toolkit": "^0.3.2",
+        "@openzeppelin/contracts-upgradeable-v5": "npm:@openzeppelin/contracts-upgradeable@^5",
+        "@openzeppelin/contracts-v5": "npm:@openzeppelin/contracts@^5",
         "ccxt": "^4.4.93",
         "ethers": "^6.15.0",
         "ethers-opt": "^1.0.4"
@@ -53,8 +57,6 @@
     "devDependencies": {
         "@arowanadao/eslint": "*",
         "@arowanadao/rollup": "*",
-        "@chainlink/contracts": "^1.4.0",
-        "@chainlink/functions-toolkit": "^0.3.2",
         "@nomicfoundation/hardhat-chai-matchers": "^2.0.9",
         "@nomicfoundation/hardhat-ethers": "^3.0.9",
         "@nomicfoundation/hardhat-ignition": "^0.15.12",
@@ -63,8 +65,6 @@
         "@nomicfoundation/hardhat-toolbox": "^6.0.0",
         "@nomicfoundation/hardhat-verify": "^2.0.14",
         "@nomicfoundation/ignition-core": "^0.15.12",
-        "@openzeppelin/contracts-upgradeable-v5": "npm:@openzeppelin/contracts-upgradeable@^5",
-        "@openzeppelin/contracts-v5": "npm:@openzeppelin/contracts@^5",
         "@typechain/ethers-v6": "npm:@arowanadao/typechain-ethers-v6@^0.5.1",
         "@typechain/hardhat": "npm:@arowanadao/typechain-hardhat@^9.1.0",
         "@types/chai": "^5.2.2",

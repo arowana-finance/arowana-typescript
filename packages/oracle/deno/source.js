@@ -3,7 +3,7 @@ const ethers = await import("npm:ethers@6.15.0");
 
 const VWAP_PRICE_URL = 'https://raw.githubusercontent.com/arowana-finance/arowana-data/main/arw_price/price_vwap.jsonl';
 const RPC_URL = 'https://sepolia-rollup.arbitrum.io/rpc';
-const CONTRACT_ADDRESS = '0x04A000cE99DF76215646e4Fe8f0780D120790ab5';
+const CONTRACT_ADDRESS = '0x91374189aC64F294f6bAF26968988fAF541ddeE2';
 const ORACLE_DECIMALS = 8;
 
 const abi = [
@@ -128,7 +128,7 @@ if (!nums.length) {
     return ethers.getBytes('0x01');
 }
 
-const chunked = chunk(nums, 10)[0];
+const chunked = chunk(nums, 4)[0];
 
 const encoded = ethers.solidityPacked(chunked.map(() => 'uint64'), chunked);
 

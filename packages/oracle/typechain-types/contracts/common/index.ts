@@ -3,5 +3,7 @@
 /* eslint-disable */
 import type * as dataFeedSol from"./DataFeed.sol/index.js";
 export type { dataFeedSol };
+import type * as dataFeedAggregatorSol from"./DataFeedAggregator.sol/index.js";
+export type { dataFeedAggregatorSol };
 import type * as withSettlerSol from"./WithSettler.sol/index.js";
 export type { withSettlerSol };

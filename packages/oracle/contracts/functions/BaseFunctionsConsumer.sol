@@ -110,7 +110,7 @@ contract BaseFunctionsConsumer is FunctionsClient, AutomationCompatible, WithSet
             return false;
         }
 
-        if (upkeepRates[getUpkeepTime(block.timestamp)] > upkeepRateCap) {
+        if (upkeepRates[getUpkeepTime(block.timestamp)] >= upkeepRateCap) {
             return false;
         }
 

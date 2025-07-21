@@ -7,8 +7,6 @@ import { BaseFunctionsConsumer } from './BaseFunctionsConsumer.sol';
 contract ARWFeed is DataFeed, BaseFunctionsConsumer {
     uint64 public updateInterval;
 
-    mapping(uint64 => uint64) public answers;
-
     /**
      * @dev For custom chainlink interval updates
      */
@@ -25,7 +23,9 @@ contract ARWFeed is DataFeed, BaseFunctionsConsumer {
         return true;
     }
 
-    function setFeedInfo(
+    function setARWFeedInfo(
+        address _asset,
+        string memory _description,
         address _router,
         address _upkeepContract,
         uint64 _upkeepInterval,
@@ -34,6 +34,7 @@ contract ARWFeed is DataFeed, BaseFunctionsConsumer {
         uint64 _maxBaseGasPrice,
         uint64 _updateInterval
     ) public onlyOwner {
+        setFeedInfo(_asset, _description);
         setConsumer(_router);
         setUpkeep(_upkeepContract, _upkeepInterval, _upkeepRateInterval, _upkeepRateCap, _maxBaseGasPrice);
         setInterval(_updateInterval);
@@ -50,13 +51,13 @@ contract ARWFeed is DataFeed, BaseFunctionsConsumer {
         for (uint i; i < arrayLen; ++i) {
             uint64 answer = nums[i * 2];
             uint64 timestamp = nums[i * 2 + 1];
+            int256 answerEncoded = int256(uint256(answer));
 
-            if (answers[timestamp] == answer) {
+            if (getTimestampAnswer[uint256(timestamp)] == answerEncoded) {
                 continue;
             }
 
-            answers[timestamp] = answer;
-            _updateAnswer(int256(uint256(answer)), uint256(s_lastRequestId), uint256(timestamp));
+            _updateAnswer(answerEncoded, latestRound + 1, uint256(timestamp));
         }
     }
 

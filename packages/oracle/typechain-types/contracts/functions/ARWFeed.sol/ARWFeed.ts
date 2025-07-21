@@ -27,12 +27,17 @@ export interface ARWFeedInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "addSettler"
-      | "answers"
+      | "asset"
       | "checkUpkeep"
       | "decimals"
+      | "deploymentTimestamp"
+      | "description"
       | "donID"
       | "gasLimit"
-      | "getTokenType"
+      | "getAnswer"
+      | "getRoundData"
+      | "getTimestamp"
+      | "getTimestampAnswer"
       | "getUpkeepTime"
       | "handleOracleFulfillment"
       | "i_router"
@@ -40,6 +45,7 @@ export interface ARWFeedInterface extends Interface {
       | "lastUpkeep"
       | "latestAnswer"
       | "latestRound"
+      | "latestRoundData"
       | "latestTimestamp"
       | "maxBaseGasPrice"
       | "owner"
@@ -49,10 +55,14 @@ export interface ARWFeedInterface extends Interface {
       | "request"
       | "s_lastRequestId"
       | "sendRequestCBOR"
+      | "setARWFeedInfo"
+      | "setAsset"
       | "setConsumer"
+      | "setDescription"
       | "setFeedInfo"
       | "setInterval"
       | "setUpkeep"
+      | "setVersion"
       | "settlers"
       | "subscriptionId"
       | "transferOwnership"
@@ -63,7 +73,8 @@ export interface ARWFeedInterface extends Interface {
       | "upkeepInterval"
       | "upkeepRateCap"
       | "upkeepRateInterval"
-      | "upkeepRates",
+      | "upkeepRates"
+      | "version",
   ): FunctionFragment;
 
   getEvent(
@@ -71,6 +82,9 @@ export interface ARWFeedInterface extends Interface {
       | "AddSettler"
       | "AnswerUpdated"
       | "Initialized"
+      | "NewAsset"
+      | "NewDescription"
+      | "NewRound"
       | "OwnershipTransferred"
       | "RemoveSettler"
       | "RequestFulfilled"
@@ -84,20 +98,37 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "addSettler",
     values: [AddressLike],
   ): string;
-  encodeFunctionData(
-    functionFragment: "answers",
-    values: [BigNumberish],
-  ): string;
+  encodeFunctionData(functionFragment: "asset", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "checkUpkeep",
     values: [BytesLike],
   ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "deploymentTimestamp",
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
+    functionFragment: "description",
+    values?: undefined,
+  ): string;
   encodeFunctionData(functionFragment: "donID", values?: undefined): string;
   encodeFunctionData(functionFragment: "gasLimit", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getTokenType",
-    values?: undefined,
+    functionFragment: "getAnswer",
+    values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRoundData",
+    values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTimestamp",
+    values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTimestampAnswer",
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
     functionFragment: "getUpkeepTime",
@@ -122,6 +153,10 @@ export interface ARWFeedInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "latestRound",
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
+    functionFragment: "latestRoundData",
     values?: undefined,
   ): string;
   encodeFunctionData(
@@ -155,12 +190,10 @@ export interface ARWFeedInterface extends Interface {
     values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "setConsumer",
-    values: [AddressLike],
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setFeedInfo",
+    functionFragment: "setARWFeedInfo",
     values: [
+      AddressLike,
+      string,
       AddressLike,
       AddressLike,
       BigNumberish,
@@ -169,6 +202,22 @@ export interface ARWFeedInterface extends Interface {
       BigNumberish,
       BigNumberish,
     ],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setAsset",
+    values: [AddressLike],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setConsumer",
+    values: [AddressLike],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setDescription",
+    values: [string],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setFeedInfo",
+    values: [AddressLike, string],
   ): string;
   encodeFunctionData(
     functionFragment: "setInterval",
@@ -183,6 +232,10 @@ export interface ARWFeedInterface extends Interface {
       BigNumberish,
       BigNumberish,
     ],
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setVersion",
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(functionFragment: "settlers", values?: undefined): string;
   encodeFunctionData(
@@ -225,18 +278,36 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "upkeepRates",
     values: [BigNumberish],
   ): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "addSettler", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "answers", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "asset", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "checkUpkeep",
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deploymentTimestamp",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "description",
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(functionFragment: "donID", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gasLimit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getAnswer", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getTokenType",
+    functionFragment: "getRoundData",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTimestamp",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTimestampAnswer",
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -256,6 +327,10 @@ export interface ARWFeedInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "latestRound",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "latestRoundData",
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -289,7 +364,16 @@ export interface ARWFeedInterface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setARWFeedInfo",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(functionFragment: "setAsset", data: BytesLike): Result;
+  decodeFunctionResult(
     functionFragment: "setConsumer",
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setDescription",
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -301,6 +385,7 @@ export interface ARWFeedInterface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: "setUpkeep", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setVersion", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "settlers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "subscriptionId",
@@ -342,6 +427,7 @@ export interface ARWFeedInterface extends Interface {
     functionFragment: "upkeepRates",
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
 }
 
 export namespace AddSettlerEvent {
@@ -383,6 +469,52 @@ export namespace InitializedEvent {
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace NewAssetEvent {
+  export type InputTuple = [asset: AddressLike];
+  export type OutputTuple = [asset: string];
+  export interface OutputObject {
+    asset: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace NewDescriptionEvent {
+  export type InputTuple = [description: string];
+  export type OutputTuple = [description: string];
+  export interface OutputObject {
+    description: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace NewRoundEvent {
+  export type InputTuple = [
+    roundId: BigNumberish,
+    startedBy: AddressLike,
+    startedAt: BigNumberish,
+  ];
+  export type OutputTuple = [
+    roundId: bigint,
+    startedBy: string,
+    startedAt: bigint,
+  ];
+  export interface OutputObject {
+    roundId: bigint;
+    startedBy: string;
+    startedAt: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -546,7 +678,7 @@ export interface ARWFeed extends BaseContract {
     "nonpayable"
   >;
 
-  answers: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  asset: TypedContractMethod<[], [string], "view">;
 
   checkUpkeep: TypedContractMethod<
     [arg0: BytesLike],
@@ -556,11 +688,37 @@ export interface ARWFeed extends BaseContract {
 
   decimals: TypedContractMethod<[], [bigint], "view">;
 
+  deploymentTimestamp: TypedContractMethod<[], [bigint], "view">;
+
+  description: TypedContractMethod<[], [string], "view">;
+
   donID: TypedContractMethod<[], [string], "view">;
 
   gasLimit: TypedContractMethod<[], [bigint], "view">;
 
-  getTokenType: TypedContractMethod<[], [bigint], "view">;
+  getAnswer: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+
+  getRoundData: TypedContractMethod<
+    [_roundId: BigNumberish],
+    [
+      [bigint, bigint, bigint, bigint, bigint] & {
+        roundId: bigint;
+        answer: bigint;
+        startedAt: bigint;
+        updatedAt: bigint;
+        answeredInRound: bigint;
+      },
+    ],
+    "view"
+  >;
+
+  getTimestamp: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+
+  getTimestampAnswer: TypedContractMethod<
+    [arg0: BigNumberish],
+    [bigint],
+    "view"
+  >;
 
   getUpkeepTime: TypedContractMethod<
     [timestamp: BigNumberish],
@@ -588,6 +746,12 @@ export interface ARWFeed extends BaseContract {
 
   latestRound: TypedContractMethod<[], [bigint], "view">;
 
+  latestRoundData: TypedContractMethod<
+    [],
+    [[bigint, bigint, bigint, bigint, bigint]],
+    "view"
+  >;
+
   latestTimestamp: TypedContractMethod<[], [bigint], "view">;
 
   maxBaseGasPrice: TypedContractMethod<[], [bigint], "view">;
@@ -610,14 +774,10 @@ export interface ARWFeed extends BaseContract {
 
   sendRequestCBOR: TypedContractMethod<[], [string], "nonpayable">;
 
-  setConsumer: TypedContractMethod<
-    [_router: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  setFeedInfo: TypedContractMethod<
+  setARWFeedInfo: TypedContractMethod<
     [
+      _asset: AddressLike,
+      _description: string,
       _router: AddressLike,
       _upkeepContract: AddressLike,
       _upkeepInterval: BigNumberish,
@@ -626,6 +786,26 @@ export interface ARWFeed extends BaseContract {
       _maxBaseGasPrice: BigNumberish,
       _updateInterval: BigNumberish,
     ],
+    [void],
+    "nonpayable"
+  >;
+
+  setAsset: TypedContractMethod<[_asset: AddressLike], [void], "nonpayable">;
+
+  setConsumer: TypedContractMethod<
+    [_router: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  setDescription: TypedContractMethod<
+    [_description: string],
+    [void],
+    "nonpayable"
+  >;
+
+  setFeedInfo: TypedContractMethod<
+    [_asset: AddressLike, _description: string],
     [void],
     "nonpayable"
   >;
@@ -644,6 +824,12 @@ export interface ARWFeed extends BaseContract {
       _upkeepRateCap: BigNumberish,
       _maxBaseGasPrice: BigNumberish,
     ],
+    [void],
+    "nonpayable"
+  >;
+
+  setVersion: TypedContractMethod<
+    [_version: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -687,6 +873,8 @@ export interface ARWFeed extends BaseContract {
 
   upkeepRates: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
+  version: TypedContractMethod<[], [bigint], "view">;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment,
   ): T;
@@ -695,8 +883,8 @@ export interface ARWFeed extends BaseContract {
     nameOrSignature: "addSettler",
   ): TypedContractMethod<[_settler: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "answers",
-  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+    nameOrSignature: "asset",
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "checkUpkeep",
   ): TypedContractMethod<
@@ -708,14 +896,41 @@ export interface ARWFeed extends BaseContract {
     nameOrSignature: "decimals",
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "deploymentTimestamp",
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "description",
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "donID",
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "gasLimit",
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getTokenType",
-  ): TypedContractMethod<[], [bigint], "view">;
+    nameOrSignature: "getAnswer",
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getRoundData",
+  ): TypedContractMethod<
+    [_roundId: BigNumberish],
+    [
+      [bigint, bigint, bigint, bigint, bigint] & {
+        roundId: bigint;
+        answer: bigint;
+        startedAt: bigint;
+        updatedAt: bigint;
+        answeredInRound: bigint;
+      },
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getTimestamp",
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getTimestampAnswer",
+  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "getUpkeepTime",
   ): TypedContractMethod<[timestamp: BigNumberish], [bigint], "view">;
@@ -741,6 +956,13 @@ export interface ARWFeed extends BaseContract {
   getFunction(
     nameOrSignature: "latestRound",
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "latestRoundData",
+  ): TypedContractMethod<
+    [],
+    [[bigint, bigint, bigint, bigint, bigint]],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "latestTimestamp",
   ): TypedContractMethod<[], [bigint], "view">;
@@ -769,12 +991,11 @@ export interface ARWFeed extends BaseContract {
     nameOrSignature: "sendRequestCBOR",
   ): TypedContractMethod<[], [string], "nonpayable">;
   getFunction(
-    nameOrSignature: "setConsumer",
-  ): TypedContractMethod<[_router: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setFeedInfo",
+    nameOrSignature: "setARWFeedInfo",
   ): TypedContractMethod<
     [
+      _asset: AddressLike,
+      _description: string,
       _router: AddressLike,
       _upkeepContract: AddressLike,
       _upkeepInterval: BigNumberish,
@@ -783,6 +1004,22 @@ export interface ARWFeed extends BaseContract {
       _maxBaseGasPrice: BigNumberish,
       _updateInterval: BigNumberish,
     ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "setAsset",
+  ): TypedContractMethod<[_asset: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setConsumer",
+  ): TypedContractMethod<[_router: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setDescription",
+  ): TypedContractMethod<[_description: string], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setFeedInfo",
+  ): TypedContractMethod<
+    [_asset: AddressLike, _description: string],
     [void],
     "nonpayable"
   >;
@@ -802,6 +1039,9 @@ export interface ARWFeed extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "setVersion",
+  ): TypedContractMethod<[_version: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "settlers",
   ): TypedContractMethod<[], [string[]], "view">;
@@ -844,6 +1084,9 @@ export interface ARWFeed extends BaseContract {
   getFunction(
     nameOrSignature: "upkeepRates",
   ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "version",
+  ): TypedContractMethod<[], [bigint], "view">;
 
   getEvent(
     key: "AddSettler",
@@ -865,6 +1108,27 @@ export interface ARWFeed extends BaseContract {
     InitializedEvent.InputTuple,
     InitializedEvent.OutputTuple,
     InitializedEvent.OutputObject
+  >;
+  getEvent(
+    key: "NewAsset",
+  ): TypedContractEvent<
+    NewAssetEvent.InputTuple,
+    NewAssetEvent.OutputTuple,
+    NewAssetEvent.OutputObject
+  >;
+  getEvent(
+    key: "NewDescription",
+  ): TypedContractEvent<
+    NewDescriptionEvent.InputTuple,
+    NewDescriptionEvent.OutputTuple,
+    NewDescriptionEvent.OutputObject
+  >;
+  getEvent(
+    key: "NewRound",
+  ): TypedContractEvent<
+    NewRoundEvent.InputTuple,
+    NewRoundEvent.OutputTuple,
+    NewRoundEvent.OutputObject
   >;
   getEvent(
     key: "OwnershipTransferred",
@@ -948,6 +1212,39 @@ export interface ARWFeed extends BaseContract {
       InitializedEvent.InputTuple,
       InitializedEvent.OutputTuple,
       InitializedEvent.OutputObject
+    >;
+
+    "NewAsset(address)": TypedContractEvent<
+      NewAssetEvent.InputTuple,
+      NewAssetEvent.OutputTuple,
+      NewAssetEvent.OutputObject
+    >;
+    NewAsset: TypedContractEvent<
+      NewAssetEvent.InputTuple,
+      NewAssetEvent.OutputTuple,
+      NewAssetEvent.OutputObject
+    >;
+
+    "NewDescription(string)": TypedContractEvent<
+      NewDescriptionEvent.InputTuple,
+      NewDescriptionEvent.OutputTuple,
+      NewDescriptionEvent.OutputObject
+    >;
+    NewDescription: TypedContractEvent<
+      NewDescriptionEvent.InputTuple,
+      NewDescriptionEvent.OutputTuple,
+      NewDescriptionEvent.OutputObject
+    >;
+
+    "NewRound(uint256,address,uint256)": TypedContractEvent<
+      NewRoundEvent.InputTuple,
+      NewRoundEvent.OutputTuple,
+      NewRoundEvent.OutputObject
+    >;
+    NewRound: TypedContractEvent<
+      NewRoundEvent.InputTuple,
+      NewRoundEvent.OutputTuple,
+      NewRoundEvent.OutputObject
     >;
 
     "OwnershipTransferred(address,address)": TypedContractEvent<

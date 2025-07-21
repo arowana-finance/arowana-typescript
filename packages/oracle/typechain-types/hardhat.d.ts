@@ -42,6 +42,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.WithSettler__factory>;
     getContractFactory(
+      name: "DataFeedAggregator",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.DataFeedAggregator__factory>;
+    getContractFactory(
       name: "DataFeed",
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.DataFeed__factory>;
@@ -142,6 +146,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer,
     ): Promise<Contracts.WithSettler>;
     getContractAt(
+      name: "DataFeedAggregator",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.DataFeedAggregator>;
+    getContractAt(
       name: "DataFeed",
       address: string | ethers.Addressable,
       signer?: ethers.Signer,
@@ -251,6 +260,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.WithSettler>;
     deployContract(
+      name: "DataFeedAggregator",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.DataFeedAggregator>;
+    deployContract(
       name: "DataFeed",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.DataFeed>;
@@ -350,6 +363,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.WithSettler>;
+    deployContract(
+      name: "DataFeedAggregator",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.DataFeedAggregator>;
     deployContract(
       name: "DataFeed",
       args: any[],

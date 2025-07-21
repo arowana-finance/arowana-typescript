@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as dataFeedSol from "./DataFeed.sol/index.js";
+export * as dataFeedAggregatorSol from "./DataFeedAggregator.sol/index.js";
 export * as withSettlerSol from "./WithSettler.sol/index.js";
