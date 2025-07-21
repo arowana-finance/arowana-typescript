@@ -38,6 +38,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.ARWFeed__factory>;
     getContractFactory(
+      name: "AGTReserveFeed",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.AGTReserveFeed__factory>;
+    getContractFactory(
+      name: "AGTFeed",
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.AGTFeed__factory>;
+    getContractFactory(
       name: "WithSettler",
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.WithSettler__factory>;
@@ -141,6 +149,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer,
     ): Promise<Contracts.ARWFeed>;
     getContractAt(
+      name: "AGTReserveFeed",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.AGTReserveFeed>;
+    getContractAt(
+      name: "AGTFeed",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.AGTFeed>;
+    getContractAt(
       name: "WithSettler",
       address: string | ethers.Addressable,
       signer?: ethers.Signer,
@@ -256,6 +274,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.ARWFeed>;
     deployContract(
+      name: "AGTReserveFeed",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AGTReserveFeed>;
+    deployContract(
+      name: "AGTFeed",
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AGTFeed>;
+    deployContract(
       name: "WithSettler",
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.WithSettler>;
@@ -358,6 +384,16 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions,
     ): Promise<Contracts.ARWFeed>;
+    deployContract(
+      name: "AGTReserveFeed",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AGTReserveFeed>;
+    deployContract(
+      name: "AGTFeed",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions,
+    ): Promise<Contracts.AGTFeed>;
     deployContract(
       name: "WithSettler",
       args: any[],

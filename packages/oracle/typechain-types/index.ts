@@ -20,6 +20,10 @@ export type { BaseFunctionsConsumer } from "./contracts/functions/BaseFunctionsC
 export { BaseFunctionsConsumer__factory } from "./factories/contracts/functions/BaseFunctionsConsumer.sol/BaseFunctionsConsumer__factory.js";
 export type { ARWFeed } from "./contracts/functions/ARWFeed.sol/ARWFeed.js";
 export { ARWFeed__factory } from "./factories/contracts/functions/ARWFeed.sol/ARWFeed__factory.js";
+export type { AGTReserveFeed } from "./contracts/functions/AGTReserveFeed.sol/AGTReserveFeed.js";
+export { AGTReserveFeed__factory } from "./factories/contracts/functions/AGTReserveFeed.sol/AGTReserveFeed__factory.js";
+export type { AGTFeed } from "./contracts/functions/AGTFeed.sol/AGTFeed.js";
+export { AGTFeed__factory } from "./factories/contracts/functions/AGTFeed.sol/AGTFeed__factory.js";
 export type { WithSettler } from "./contracts/common/WithSettler.sol/WithSettler.js";
 export { WithSettler__factory } from "./factories/contracts/common/WithSettler.sol/WithSettler__factory.js";
 export type { DataFeedAggregator } from "./contracts/common/DataFeedAggregator.sol/DataFeedAggregator.js";
