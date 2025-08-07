@@ -1,7 +1,7 @@
 {
     "name": "arowana-typescript",
     "private": true,
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Monorepo for Arowana Libraries",
     "license": "MIT",
     "author": "Arowana Finance",

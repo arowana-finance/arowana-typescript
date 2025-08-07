@@ -1,15 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {
-    IFunctionsRouter
-} from '@chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsRouter.sol';
-import {
-    IFunctionsClient
-} from '@chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol';
-import {
-    FunctionsRequest
-} from '@chainlink/contracts/src/v0.8/functions/v1_0_0/libraries/FunctionsRequest.sol';
+import { IFunctionsRouter } from '@chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsRouter.sol';
+import { IFunctionsClient } from '@chainlink/contracts/src/v0.8/functions/v1_0_0/interfaces/IFunctionsClient.sol';
+import { FunctionsRequest } from '@chainlink/contracts/src/v0.8/functions/v1_0_0/libraries/FunctionsRequest.sol';
 
 /// @title The Chainlink Functions client contract
 /// @notice Contract developers can inherit this contract in order to make Chainlink Functions requests

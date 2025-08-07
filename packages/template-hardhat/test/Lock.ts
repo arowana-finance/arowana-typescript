@@ -5,6 +5,12 @@ import hre from 'hardhat';
 import type { Signer } from 'ethers';
 import { Lock__factory } from '../typechain-types/index.js';
 
+async function getSigners() {
+    return (await hre.ethers.getSigners()) as unknown as (Signer & {
+        address: string;
+    })[];
+}
+
 describe('Lock', function () {
     // We define a fixture to reuse the same setup in every test.
     // We use loadFixture to run this setup once, snapshot that state,
@@ -17,9 +23,7 @@ describe('Lock', function () {
         const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
 
         // Contracts are deployed using the first signer/account by default
-        const [owner, otherAccount] = (await hre.ethers.getSigners()) as unknown as (Signer & {
-            address: string;
-        })[];
+        const [owner, otherAccount] = await getSigners();
 
         const lock = await new Lock__factory(owner).deploy(unlockTime, { value: lockedAmount });
 
@@ -47,9 +51,10 @@ describe('Lock', function () {
 
         it('Should fail if the unlockTime is not in the future', async function () {
             // We don't use the fixture here because we want a different deployment
+            const [owner] = await getSigners();
             const latestTime = await time.latest();
-            const Lock = await hre.ethers.getContractFactory('Lock');
-            await expect(Lock.deploy(latestTime, { value: 1 })).to.be.revertedWith(
+            const LockFactory = new Lock__factory(owner);
+            await expect(LockFactory.deploy(latestTime, { value: 1 })).to.be.revertedWith(
                 'Unlock time should be in the future',
             );
         });
