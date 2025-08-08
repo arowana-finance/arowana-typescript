@@ -1554,7 +1554,7 @@
     "@nomicfoundation/edr-linux-x64-musl" "0.11.3"
     "@nomicfoundation/edr-win32-x64-msvc" "0.11.3"
 
-"@nomicfoundation/hardhat-chai-matchers@^2.0.9":
+"@nomicfoundation/hardhat-chai-matchers@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-chai-matchers/-/hardhat-chai-matchers-2.1.0.tgz#c651dfcacd7b374f9a9876a6d5bcf459a86c4c82"
   integrity sha512-GPhBNafh1fCnVD9Y7BYvoLnblnvfcq3j8YDbO1gGe/1nOFWzGmV7gFu5DkwFXF+IpYsS+t96o9qc/mPu3V3Vfw==
@@ -1564,7 +1564,7 @@
     deep-eql "^4.0.1"
     ordinal "^1.0.3"
 
-"@nomicfoundation/hardhat-ethers@^3.0.9":
+"@nomicfoundation/hardhat-ethers@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-ethers/-/hardhat-ethers-3.1.0.tgz#d33595e85cdb53e802391de64ee35910c078dbb0"
   integrity sha512-jx6fw3Ms7QBwFGT2MU6ICG292z0P81u6g54JjSV105+FbTZOF4FJqPksLfDybxkkOeq28eDxbqq7vpxRYyIlxA==
@@ -1572,12 +1572,12 @@
     debug "^4.1.1"
     lodash.isequal "^4.5.0"
 
-"@nomicfoundation/hardhat-ignition-ethers@^0.15.13":
+"@nomicfoundation/hardhat-ignition-ethers@^0.15.14":
   version "0.15.14"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-ignition-ethers/-/hardhat-ignition-ethers-0.15.14.tgz#383baf0d949d37b3a0e2ee54b1040ecfe8683e0f"
   integrity sha512-eq+5n+c1DW18/Xp8/QrHBBvG5QaKUxYF/byol4f1jrnZ1zAy0OrqEa/oaNFWchhpLalX7d7suk/2EL0PbT0CDQ==
 
-"@nomicfoundation/hardhat-ignition@^0.15.12":
+"@nomicfoundation/hardhat-ignition@^0.15.13":
   version "0.15.13"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-ignition/-/hardhat-ignition-0.15.13.tgz#6f32eb8bbdccd32eb1eb1ccf26cb5e2689330523"
   integrity sha512-G4XGPWvxs9DJhZ6PE1wdvKjHkjErWbsETf4c7YxO6GUz+MJGlw+PtgbnCwhL3tQzSq3oD4MB0LGi+sK0polpUA==
@@ -1590,19 +1590,19 @@
     json5 "^2.2.3"
     prompts "^2.4.2"
 
-"@nomicfoundation/hardhat-network-helpers@^1.0.13":
+"@nomicfoundation/hardhat-network-helpers@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-network-helpers/-/hardhat-network-helpers-1.1.0.tgz#3ce7958ab83eff58c12e14884c9b01cf0da29b53"
   integrity sha512-ZS+NulZuR99NUHt2VwcgZvgeD6Y63qrbORNRuKO+lTowJxNVsrJ0zbRx1j5De6G3dOno5pVGvuYSq2QVG0qCYg==
   dependencies:
     ethereumjs-util "^7.1.4"
 
-"@nomicfoundation/hardhat-toolbox@^6.0.0":
+"@nomicfoundation/hardhat-toolbox@^6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-toolbox/-/hardhat-toolbox-6.1.0.tgz#946b95983c308610c649513ec4e73736fe1318d8"
   integrity sha512-iAIl6pIK3F4R3JXeq+b6tiShXUrp1sQRiPfqoCMUE7QLUzoFifzGV97IDRL6e73pWsMKpUQBsHBvTCsqn+ZdpA==
 
-"@nomicfoundation/hardhat-verify@^2.0.14":
+"@nomicfoundation/hardhat-verify@^2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-verify/-/hardhat-verify-2.1.1.tgz#0af5fc4228df860062865fcafb4a01bc0b89f8a3"
   integrity sha512-K1plXIS42xSHDJZRkrE2TZikqxp9T4y6jUMUNI/imLgN5uCcEQokmfU0DlyP9zzHncYK92HlT5IWP35UVCLrPw==
@@ -1617,7 +1617,7 @@
     table "^6.8.0"
     undici "^5.14.0"
 
-"@nomicfoundation/ignition-core@^0.15.12", "@nomicfoundation/ignition-core@^0.15.13":
+"@nomicfoundation/ignition-core@^0.15.13":
   version "0.15.13"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/ignition-core/-/ignition-core-0.15.13.tgz#b2320eb7a6acda7ccb7da0fdd89231206c970ffa"
   integrity sha512-Z4T1WIbw0EqdsN9RxtnHeQXBi7P/piAmCu8bZmReIdDo/2h06qgKWxjDoNfc9VBFZJ0+Dx79tkgQR3ewxMDcpA==
@@ -3392,7 +3392,7 @@ ccount@^2.0.0:
   resolved "https://registry.yarnpkg.com/ccount/-/ccount-2.0.1.tgz#17a3bf82302e0870d6da43a01311a8bc02a3ecf5"
   integrity sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==
 
-ccxt@^4.4.93:
+ccxt@^4.4.99:
   version "4.4.99"
   resolved "https://registry.yarnpkg.com/ccxt/-/ccxt-4.4.99.tgz#54f04dbad36ddd6d9582a57b6746ee8e3acf22f5"
   integrity sha512-89wAaTMP/79itKvy7FjvSxowFD1yREi3cE5K46bzmJnm/4EC4qJ0wvs1vm90VjpaU9UZr7MCImU68ttY4j/vlw==
@@ -3419,7 +3419,7 @@ chai@^4.3.4:
     pathval "^1.1.1"
     type-detect "^4.1.0"
 
-chai@^5.2.0:
+chai@^5.2.0, chai@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/chai/-/chai-5.2.1.tgz#a9502462bdc79cf90b4a0953537a9908aa638b47"
   integrity sha512-5nFxhUrX0PqtyogoYOA8IPswy5sZFTOsBFl/9bNsmDLgsxYTzSZQJDPppDnZPTQbzSEm0hqGjWPzRemQCYbD6A==
@@ -4183,7 +4183,7 @@ esbuild@^0.21.3:
     "@esbuild/win32-ia32" "0.21.5"
     "@esbuild/win32-x64" "0.21.5"
 
-esbuild@^0.25.0, esbuild@^0.25.5, esbuild@~0.25.0:
+esbuild@^0.25.0, esbuild@^0.25.8, esbuild@~0.25.0:
   version "0.25.8"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.25.8.tgz#482d42198b427c9c2f3a81b63d7663aecb1dda07"
   integrity sha512-vVC0USHGtMi8+R4Kz8rt6JhEWLxsv9Rnu/lGYbPR8u47B+DCBksq9JarW0zOO7bs37hyOK1l2/oqtbciutL5+Q==
@@ -4515,7 +4515,7 @@ ethereumjs-util@7.1.5, ethereumjs-util@^7.1.4, ethereumjs-util@^7.1.5:
     ethereum-cryptography "^0.1.3"
     rlp "^2.2.4"
 
-ethers-opt@^1.0.4:
+ethers-opt@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/ethers-opt/-/ethers-opt-1.0.7.tgz#549db9acbe25d1c1bbdb1dcfc5f83edc4f3a5880"
   integrity sha512-LmaUmNSGYtOcCt4PajnxWhy9LIlX8b9UACslyywbwLhDm3zrHa6fa5RomHOOL30ToDg6rkEEoIxQvOLRhJflQw==
@@ -5121,7 +5121,7 @@ hardhat-tracer@^3.2.1:
     ethers "^5.6.1"
     semver "^7.6.2"
 
-hardhat@^2.25.0:
+hardhat@^2.26.2:
   version "2.26.2"
   resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.26.2.tgz#e331ad9c64730d00e1c71217a0161f204796b02d"
   integrity sha512-uIETdC1MAWSnu+48B+583r3b8JqHtkBGEiXoAPV5hcXYGkCW5Fnnpn7SIgPa8owhObm9oUqIqMXMJ6H92N7Pyg==
@@ -6012,7 +6012,7 @@ log-symbols@^4.1.0:
     chalk "^4.1.0"
     is-unicode-supported "^0.1.0"
 
-logger-chain@^1.0.2:
+logger-chain@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/logger-chain/-/logger-chain-1.0.3.tgz#78375833936917ef5d121e6720894f65761aa376"
   integrity sha512-x5mLVtDh6oDecefldDl61vMvejz/Qo7oa8JsNawApwGc4ekEwdmZHlLrbBsYRQ3vTIZTR5tkWwtPhMidkaVk4Q==
@@ -6800,7 +6800,7 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier-plugin-solidity@^2.0.0:
+prettier-plugin-solidity@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/prettier-plugin-solidity/-/prettier-plugin-solidity-2.1.0.tgz#2298aefc92c5ebd3a0323f98151d2a82f38fc7c6"
   integrity sha512-O5HX4/PCE5aqiaEiNGbSRLbSBZQ6kLswAav5LBSewwzhT+sZlN6iAaLZlZcJzPEnIAxwLEHP03xKEg92fflT9Q==
@@ -7072,7 +7072,7 @@ rollup-plugin-polyfill-node@^0.13.0:
   dependencies:
     "@rollup/plugin-inject" "^5.0.4"
 
-rollup@^4.20.0, rollup@^4.40.0, rollup@^4.44.2:
+rollup@^4.20.0, rollup@^4.43.0, rollup@^4.46.2:
   version "4.46.2"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-4.46.2.tgz#09b1a45d811e26d09bed63dc3ecfb6831c16ce32"
   integrity sha512-WMmLFI+Boh6xbop+OAGo9cQ3OgX9MIg7xOQjn+pTCwOkk+FNDAeAemXkJ3HzDJrVXleLOFVa1ipuc1AmEx1Dwg==
@@ -8038,7 +8038,7 @@ typescript-eslint@^8.39.0:
     "@typescript-eslint/typescript-estree" "8.39.0"
     "@typescript-eslint/utils" "8.39.0"
 
-typescript@>=5.0.2, typescript@^5.8.3, typescript@^5.9.2:
+typescript@>=5.0.2, typescript@^5.9.2:
   version "5.9.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.2.tgz#d93450cddec5154a2d5cabe3b8102b83316fb2a6"
   integrity sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==
@@ -8236,9 +8236,9 @@ vfile@^6.0.0:
     vfile-message "^4.0.0"
 
 viem@^2.27.0:
-  version "2.33.2"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.33.2.tgz#039732775976efb821a2f7c6c6d4cd6029f5af4f"
-  integrity sha512-/720OaM4dHWs8vXwNpyet+PRERhPaW+n/1UVSCzyb9jkmwwVfaiy/R6YfCFb4v+XXbo8s3Fapa3DM5yCRSkulA==
+  version "2.33.3"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.33.3.tgz#b69d7ff9edf649d1b7d9218e0225bcadc83a8caa"
+  integrity sha512-aWDr6i6r3OfNCs0h9IieHFhn7xQJJ8YsuA49+9T5JRyGGAkWhLgcbLq2YMecgwM7HdUZpx1vPugZjsShqNi7Gw==
   dependencies:
     "@noble/curves" "1.9.2"
     "@noble/hashes" "1.8.0"
@@ -8261,15 +8261,15 @@ vite-node@3.2.4:
     vite "^5.0.0 || ^6.0.0 || ^7.0.0-0"
 
 "vite@^5.0.0 || ^6.0.0 || ^7.0.0-0":
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-7.0.6.tgz#7866ccb176db4bbeec0adfb3f907f077881591d0"
-  integrity sha512-MHFiOENNBd+Bd9uvc8GEsIzdkn1JxMmEeYX35tI3fv0sJBUTfW5tQsoaOwuY4KhBI09A3dUJ/DXf2yxPVPUceg==
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-7.1.1.tgz#a2c25f31742fd9f8b223d809df1ce3026e813fcf"
+  integrity sha512-yJ+Mp7OyV+4S+afWo+QyoL9jFWD11QFH0i5i7JypnfTcA1rmgxCbiA8WwAICDEtZ1Z1hzrVhN8R8rGTqkTY8ZQ==
   dependencies:
     esbuild "^0.25.0"
     fdir "^6.4.6"
     picomatch "^4.0.3"
     postcss "^8.5.6"
-    rollup "^4.40.0"
+    rollup "^4.43.0"
     tinyglobby "^0.2.14"
   optionalDependencies:
     fsevents "~2.3.3"
@@ -8285,7 +8285,7 @@ vite@^5.4.14:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vitepress@^1.6.3, vitepress@^1.6.4:
+vitepress@^1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-1.6.4.tgz#1b6c68fede541a3f401a66263dce0c985e2d8d92"
   integrity sha512-+2ym1/+0VVrbhNyRoFFesVvBvHAVMZMK0rw60E3X/5349M1GuVdKeazuksqopEdvkKwKGs21Q729jX81/bkBJg==

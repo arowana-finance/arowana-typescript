@@ -1,6 +1,6 @@
 {
     "name": "@arowanadao/eslint",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Common ESLint config for Arowana projects",
     "license": "MIT",
     "author": "Arowana Finance",

@@ -1,6 +1,6 @@
 {
     "name": "@arowanadao/rollup",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Rollup plugin & config generator for Arowana TypeScript projects",
     "license": "MIT",
     "author": "Arowana Finance",
@@ -49,8 +49,8 @@
         "@rollup/plugin-replace": "^6.0.2",
         "@rollup/plugin-terser": "^0.4.4",
         "dts-bundle-generator": "^9.5.1",
-        "esbuild": "^0.25.5",
-        "rollup": "^4.44.2",
+        "esbuild": "^0.25.8",
+        "rollup": "^4.46.2",
         "rollup-plugin-esbuild": "^6.2.1",
         "rollup-plugin-polyfill-node": "^0.13.0",
         "yoctocolors": "^2.1.1"
